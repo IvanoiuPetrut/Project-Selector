@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 3rem;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /*scale(0); */
+  transition: all 0.2s ease-in-out;
+  background-color: red;
+  border: 1px solid black;
+  border-radius: 9px;
+  z-index: 10;
+  width: min(50rem, 80%);
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
+  /* opacity: 1;
+  pointer-events: none; */
+}
+
+/* .create-project-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+} */
+
+/* ********************** */
+/* PROJECT */
+/* ********************** */
+
+.project {
+  background-color: aqua;
+}
