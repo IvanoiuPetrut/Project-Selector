@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Formular</title>
+    <style>
+      .form {
+        max-width: 235px;
+      }
+      .form .form__field {
+        margin-bottom: 10px;
+      }
+
+      .form .form__input,
+      .form .form__select,
+      .form .form__textarea {
+        border: 1px solid grey;
+        height: 15px;
+        padding: 5px;
+      }
+      .form .form__select {
+        height: 25px;
+      }
+
+      .form .form__label {
+        width: 80px;
+        display: inline-block;
+      }
+
+      .form .form__button {
+        height: 30px;
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <form
+      action="insert_data_from_form.php"
+      class="form"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="form__field">
+        <label class="form__label" for="prenume">Prenume</label>
+        <input
+          class="form__input"
+          type="text"
+          name="first_name"
+          id="prenume"
+          placeholder="Prenume"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="nume">Nume</label>
+        <input
+          class="form__input"
+          type="text"
+          name="last_name"
+          id="nume"
+          placeholder="Nume"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="email">E-mail</label>
+        <input
+          class="form__input"
+          name="email"
+          type="email"
+          id="email"
+          placeholder="E-mail"
+        />
+      </div>
+      <button type="submit" class="form__button">Trimite</button>
+      <button type="reset" class="form__button">Sterge</button>
+    </form>
+  </body>
+</html>
