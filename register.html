@@ -7,27 +7,54 @@
     <title>Project Selector - Log in</title>
   </head>
   <body>
-    <main>
-      <form action="#">
-        <div>
-          <label for="user"></label>
-          <input type="text" name="user" id="user" placeholder="Username" />
-        </div>
-        <div>
-          <label for="email"></label>
-          <input type="email" name="email" id="email" placeholder="Email" />
-        </div>
-        <div>
-          <label for="password"></label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-          />
-        </div>
-        <button>Submit</button>
-      </form>
-    </main>
+    <form
+      action="insert_data_from_form.php"
+      class="form"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="form__field">
+        <label class="form__label" for="first_name">First Name</label>
+        <input
+          class="form__input"
+          type="text"
+          name="first_name"
+          id="first_name"
+          placeholder="Fist Name"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="last_name">Last Name</label>
+        <input
+          class="form__input"
+          type="text"
+          name="last_name"
+          id="last_name"
+          placeholder="Last Name"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="email">E-Mail</label>
+        <input
+          class="form__input"
+          name="email"
+          type="email"
+          id="email"
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="password">Password</label>
+        <input
+          class="form__input"
+          name="password"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
+      </div>
+      <button type="submit" class="form__button">Submit</button>
+      <button type="reset" class="form__button">Reset</button>
+    </form>
   </body>
 </html>
