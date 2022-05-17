@@ -9,7 +9,10 @@ html {
 }
 
 body {
-  font-size: 3rem;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.6rem;
+  background-color: var(--bg);
+  color: var(--gray3);
 }
 
 .modal {
@@ -41,6 +44,19 @@ body {
   pointer-events: none; */
 }
 
+.container {
+  max-width: 114rem;
+  margin: 0 auto;
+}
+
+.heading--primary {
+  font-size: 6.1rem;
+}
+
+.heading--secondary {
+  font-size: 4.8rem;
+}
+
 /* .create-project-overlay.active {
   opacity: 1;
   pointer-events: all;
@@ -51,5 +67,37 @@ body {
 /* ********************** */
 
 .project {
-  background-color: aqua;
+  background-color: var(--bg-secondary);
+  max-width: min(114rem, 80%);
+  padding: 1.2rem 2.4rem;
+  margin-bottom: 2.4rem;
+  border-radius: 12px;
+}
+
+.project__title {
+  font-size: 3.1rem;
+  font-weight: bold;
+  color: var(--primary);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project__title .icon {
+  cursor: pointer;
+}
+
+.project__description {
+  font-size: 2rem;
+  color: var(--gray2);
+  width: 60%;
+
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.active .project__description {
+  height: 100%;
 }

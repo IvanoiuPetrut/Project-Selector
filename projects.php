@@ -12,11 +12,15 @@ global $link;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/colors.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <main>
-    <h1>Projects</h1>
+    <h1 class="heading--primary">Projects</h1>
     <!-- insert from php -->
     <?php
     $sql = 'SELECT * FROM projects';
@@ -25,7 +29,7 @@ global $link;
         // output data of each row
         while ($row = $result->fetch_assoc()) {
             echo '<div class="project">';
-            echo '<h2 class="project__title">Materie ' . $row['name'] . '</h2>';
+            echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
             echo '<p class="project__description">' . $row['description'] . '</p>';
             echo '</div>';
         }
@@ -56,6 +60,8 @@ global $link;
     <div id="overlay" class="create-project-overlay"></div>
   </main>
 
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="scripts/script.js"></script>
 </body>
 
