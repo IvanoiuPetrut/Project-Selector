@@ -11,11 +11,9 @@ global $link;
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/projects.css" />
 </head>
 
 <body>
@@ -27,12 +25,14 @@ global $link;
     $result = $link->query($sql);
     if ($result->num_rows > 0) {
         // output data of each row
+        echo '<div class="container">';
         while ($row = $result->fetch_assoc()) {
             echo '<div class="project">';
             echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
             echo '<p class="project__description">' . $row['description'] . '</p>';
             echo '</div>';
         }
+        echo '</div>';
     } else {
         echo "0 results";
     }
