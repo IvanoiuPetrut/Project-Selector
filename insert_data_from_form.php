@@ -8,8 +8,12 @@ $group = $_POST['group'];
 $email = $_POST['email'];
 $password = $_POST['password'];
 
+// insert data from form into database and id from another table
+$sql = "INSERT INTO users (first_name, last_name, group, email, password) VALUES ('$first_name', '$last_name', '$group', '$email', '$password')";
+
 // insert data into database
 $sql = "INSERT INTO users (first_name, last_name, group_id, email, password) VALUES ('$first_name', '$last_name', SELECT id FROM groups WHERE name = '$group', '$email', '$password')";
+
 
 // Inserare date
 // $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('$first_name', '$last_name', '$email', '$password')";
