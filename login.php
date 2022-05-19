@@ -1,7 +1,3 @@
-<?php
-  include 'meniu.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,8 +8,24 @@
     <link rel="stylesheet" href="styles/general.css" />
     <link rel="stylesheet" href="styles/colors.css" />
     <link rel="stylesheet" href="styles/register.css" />
+    <link rel="stylesheet" href="styles/meniu.css" />
   </head>
   <body>
+  <header>
+      <nav class="nav">
+        <ul class="nav__list">
+          <?php
+            include 'meniu.php';
+          ?>
+        </ul>
+        <?php
+          if(isset($_SESSION['user_id'])){
+            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
+          }
+        ?>
+      </nav>
+    </header>
+
     <form
       action="authentificator.php"
       class="form"

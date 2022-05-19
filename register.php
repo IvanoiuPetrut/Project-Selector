@@ -1,39 +1,91 @@
-<?php
-include 'connect.php';
-global $link;
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/general.css" />
+    <link rel="stylesheet" href="styles/colors.css" />
+    <link rel="stylesheet" href="styles/register.css" />
+    <link rel="stylesheet" href="styles/meniu.css" />
+    <title>Project Selector - Register</title>
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <ul class="nav__list">
+          <?php
+            include 'meniu.php';
+          ?>
+        </ul>
+        <?php
+          if(isset($_SESSION['user_id'])){
+            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
+          }
+        ?>
+      </nav>
+    </header>
 
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$group = $_POST['group'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$password = hash('sha256', $password);
-$id_role =  1;
-// create variable with id group from select option
-
-$sql = 'INSERT INTO users (first_name, last_name, email, password, id_group, id_role) VALUES (?, ?, ?, ?, ?, ?)';
-
-if($stmt = mysqli_prepare($link, $sql)) {
-    $id_group = 'SELECT id FROM groups WHERE name = "'.$group.'"';
-    mysqli_stmt_bind_param($stmt, 'ssssii', $first_name, $last_name, $email, $password, $id_group, $id_role);
-    mysqli_stmt_execute($stmt);
-    echo 'Records inserted successfully.';
-} else {
-    echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
-}
-
-// select id froum groups where group name is the same as the one from the form
-
-// insert data into database
-// $sql = "INSERT INTO users (first_name, last_name, email, password, id_group, id_role) VALUES ('$first_name', '$last_name', '$email', '$password', (SELECT id FROM groups WHERE name = '$group'), 1)";
-// $sql = "INSERT INTO users (first_name, last_name, group_id, email, password) VALUES ('$first_name', '$last_name', '$id_group', '$email', '$password')";
-
-
-// Inserare date
-// $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('$first_name', '$last_name', '$email', '$password')";
-// $sql2 = "INSERT INTO users(group_id) VALUES ((SELECT id FROM groups WHERE name = '$group'))";
-
-mysqli_stmt_close($stmt);
-
-mysqli_close($link);
-?>
+    <form
+      action="create_account.php"
+      class="form"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="form__field">
+        <label class="form__label" for="first_name">First Name</label>
+        <input
+          class="form__input"
+          type="text"
+          name="first_name"
+          id="first_name"
+          placeholder="First Name"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="last_name">Last Name</label>
+        <input
+          class="form__input"
+          type="text"
+          name="last_name"
+          id="last_name"
+          placeholder="Last Name"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="group">Group</label>
+        <input
+          class="form__input"
+          type="text"
+          name="group"
+          id="group"
+          placeholder="222/1"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="email">E-Mail</label>
+        <input
+          class="form__input"
+          name="email"
+          type="email"
+          id="email"
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="form__field">
+        <label class="form__label" for="password">Password</label>
+        <input
+          class="form__input"
+          name="password"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
+      </div>
+      <div class="form__field--btn">
+        <button type="submit" class="form__button btn">Submit</button>
+        <button type="reset" class="form__button btn">Reset</button>
+      </div>
+    </form>
+  </body>
+</html>

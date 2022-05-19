@@ -13,7 +13,7 @@
   <body>
     <header>
       <nav class="nav">
-        <ul class="nav__lsit">
+        <ul class="nav__list">
           <?php
             include 'meniu.php';
           ?>

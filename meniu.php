@@ -8,7 +8,7 @@
 <?php
 echo '
 <li><a href="index.php">Home</a></li>
-<li><a href="register.html">Register</a></li>
+<li><a href="register.php">Register</a></li>
 <li><a href="login.php">Login</a></li>
 <li><a href="projects.php">Projects</a></li>';
 
