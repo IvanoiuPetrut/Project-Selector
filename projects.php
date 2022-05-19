@@ -55,7 +55,13 @@ include 'connect.php';
     $link->close();
 
     ?>
+
     <button id="create-project-btn-open">Create project</button>
+    <?php
+          if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 2){
+            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
+          }
+    ?>
     <div class="modal" id="create-project-modal">
       <!-- form -->
       <form action="insert_data_from_project.php" class="form" method="post" enctype="multipart/form-data">
