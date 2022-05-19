@@ -26,7 +26,7 @@ include 'connect.php';
           ?>
       </ul>
       <?php
-          if(isset($_SESSION['user_id'])){
+          if(isset($_SESSION['user_id'])) {
             echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
           }
         ?>
@@ -58,28 +58,29 @@ include 'connect.php';
 
     <button id="create-project-btn-open">Create project</button>
     <?php
-          if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 2){
-            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
+          if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
+            echo <<<HTML
+            <div class="modal" id="create-project-modal">
+              <!-- form -->
+              <form action="insert_data_from_project.php" class="form" method="post" enctype="multipart/form-data">
+                <div class="form__field">
+                  <label class="form__label" for="project_name">Project Name</label>
+                  <input class="form__input" type="text" name="project_name" id="project_name" placeholder="Project Name"
+                    required />
+                </div>
+                <div class="form__field">
+                  <label class="form__label" for="project_description">Project Description</label>
+                  <textarea class="form__input" name="project_description" id="project_description"
+                    placeholder="Project Description" required></textarea>
+                </div>
+                <button type="submit" class="form__button">Submit</button>
+              </form>
+              <button id="create-project-btn-close">Close</button>
+            </div>
+            <div id="overlay" class="create-project-overlay"></div>
+HTML;
           }
     ?>
-    <div class="modal" id="create-project-modal">
-      <!-- form -->
-      <form action="insert_data_from_project.php" class="form" method="post" enctype="multipart/form-data">
-        <div class="form__field">
-          <label class="form__label" for="project_name">Project Name</label>
-          <input class="form__input" type="text" name="project_name" id="project_name" placeholder="Project Name"
-            required />
-        </div>
-        <div class="form__field">
-          <label class="form__label" for="project_description">Project Description</label>
-          <textarea class="form__input" name="project_description" id="project_description"
-            placeholder="Project Description" required></textarea>
-        </div>
-        <button type="submit" class="form__button">Submit</button>
-      </form>
-      <button id="create-project-btn-close">Close</button>
-    </div>
-    <div id="overlay" class="create-project-overlay"></div>
   </main>
 
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

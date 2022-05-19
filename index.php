@@ -19,9 +19,7 @@
           ?>
         </ul>
         <?php
-          if(isset($_SESSION['user_id'])){
-            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
-          }
+          include 'logged-in.php'; 
         ?>
       </nav>
     </header>
