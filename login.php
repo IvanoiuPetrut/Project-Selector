@@ -1,51 +1,25 @@
+<?php
+  include 'meniu.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Selector - Register</title>
     <link rel="stylesheet" href="styles/general.css" />
     <link rel="stylesheet" href="styles/colors.css" />
     <link rel="stylesheet" href="styles/register.css" />
-    <title>Project Selector - Register</title>
   </head>
   <body>
     <form
-      action="register.php"
+      action="authentificator.php"
       class="form"
       method="post"
       enctype="multipart/form-data"
     >
-      <div class="form__field">
-        <label class="form__label" for="first_name">First Name</label>
-        <input
-          class="form__input"
-          type="text"
-          name="first_name"
-          id="first_name"
-          placeholder="First Name"
-        />
-      </div>
-      <div class="form__field">
-        <label class="form__label" for="last_name">Last Name</label>
-        <input
-          class="form__input"
-          type="text"
-          name="last_name"
-          id="last_name"
-          placeholder="Last Name"
-        />
-      </div>
-      <div class="form__field">
-        <label class="form__label" for="group">Group</label>
-        <input
-          class="form__input"
-          type="text"
-          name="group"
-          id="group"
-          placeholder="222/1"
-        />
-      </div>
       <div class="form__field">
         <label class="form__label" for="email">E-Mail</label>
         <input
