@@ -23,4 +23,11 @@ if(isset($_SESSION['user_id'])){
   <li><a href="logout.php">Logout</a></li>
 HTML;
 }
+
+if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
+  echo <<<HTML
+  <li><a href="admin.php">Admin</a></li>
+HTML;
+}
+// session_close();
 ?>

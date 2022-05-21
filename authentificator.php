@@ -47,7 +47,7 @@
                 echo "User autentificat: " . $row['first_name'];
                 session_write_close();
             } else {
-                header('Location: login.php');
+                // header('Location: login.php');
                 echo "Userul nu exista";
             }
         } else {

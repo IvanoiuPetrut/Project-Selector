@@ -41,10 +41,17 @@
         // output data of each row
         echo '<div class="container">';
         while ($row = $result->fetch_assoc()) {
-            echo '<div class="project">';
-            echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
-            echo '<p class="project__description">' . $row['description'] . '</p>';
-            echo '</div>';
+            // echo '<div class="project">';
+            // echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
+            // echo '<p class="project__description">' . $row['description'] . '</p>';
+            // echo '</div>';
+            echo <<<HTML
+              <div class="project">
+                <h2 class="project__title accordion">Materie &mdash; $row[name]<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>
+                <p class="project__description">$row[description]</p>
+              </div>
+            HTML;
+            // check if the user is a techer or a student
         }
         echo '</div>';
     } else {

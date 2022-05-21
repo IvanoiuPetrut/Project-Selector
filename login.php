@@ -29,7 +29,6 @@
   </header>
 
   <?php
-    // checl if user is logged in
     if(!isset($_SESSION['user_id'])){
       echo <<<HTML
       <main>
@@ -69,7 +68,7 @@
     }
     else {
       echo <<<HTML
-        <p>Sunteti deja logat</p>
+        <p>Sunteti deja logat.</p>
       HTML;
     }
     ?>
