@@ -42,6 +42,7 @@
                 $_SESSION['user_name'] = $row['first_name'];
                 $_SESSION['user_email'] = $row['email'];
                 $_SESSION['user_password'] = $row['password'];
+                $_SESSION['user_group'] = $row['id_group'];
                 $_SESSION['user_role'] = $row['id_role'];
                 header('Location: ../proiect/index.php');
                 echo "User autentificat: " . $row['first_name'];

@@ -33,25 +33,56 @@
 
   <main>
     <h1 class="heading--primary">Projects</h1>
-    <!-- insert from php -->
     <?php
+      // insert session error array intro a new array and display it
+      if(isset($_SESSION['errors'])) {
+        $errors = $_SESSION['errors'];
+        echo '<div class="errors__wrapper">';
+        foreach($errors as $error) {
+          echo '<p class="error">' . $error[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['errors']);
+      }
+
+      // insert session success array intro a new array and display it
+      if(isset($_SESSION['success'])) {
+        $success = $_SESSION['success'];
+        echo '<div class="success__wrapper">';
+        foreach($success as $succ) {
+          echo '<p class="success">' . $succ[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['success']);
+      }
+      
     $sql = 'SELECT * FROM projects';
     $result = $link->query($sql);
     if ($result->num_rows > 0) {
         // output data of each row
         echo '<div class="container">';
         while ($row = $result->fetch_assoc()) {
-            // echo '<div class="project">';
-            // echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
-            // echo '<p class="project__description">' . $row['description'] . '</p>';
-            // echo '</div>';
-            echo <<<HTML
-              <div class="project">
-                <h2 class="project__title accordion">Materie &mdash; $row[name]<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>
-                <p class="project__description">$row[description]</p>
-              </div>
-            HTML;
+            echo '<div class="project__wrapper">';
+            echo '<div class="project">';
+            echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
+            echo '<p class="project__description">' . $row['description'] . '</p>';
+            echo '</div>';
+            
             // check if the user is a techer or a student
+            if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
+                echo '<div class="project__buttons">';
+                echo '<a href="edit_project.php?id=' . $row['id'] . '" class="button button--primary">Edit</a>';
+                echo '<a href="delete_project.php?id=' . $row['id'] . '" class="button button--primary">Delete</a>';
+                echo '</div>';
+            }
+
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
+                echo '<div class="project__buttons">';
+                echo '<a href="add_project.php?id=' . $row['id'] . '" class="button button--primary">Add project</a>';
+                echo '</div>';
+            }
+
+            echo '</div>';
         }
         echo '</div>';
     } else {
