@@ -2,8 +2,8 @@
 include 'connect.php';
 global $link;
 
-// get the data form the form
-if($_SESSION['user_role'] != 3) {
+session_start();
+if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
 $id = $_POST['id'];
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
@@ -46,6 +46,9 @@ if($stmt = mysqli_prepare($link, $sql)) {
 mysqli_stmt_close($stmt);
 mysqli_close($link);
 } else {
-    header('Location: ../proiect/admin.php');
+    // header('Location: ../proiect/admin.php');
+    echo 'You are not the admin';
 }
+
+session_write_close();
 ?>

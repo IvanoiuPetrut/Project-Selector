@@ -37,6 +37,7 @@ if($_SESSION['user_role'] == 1)
             mysqli_stmt_bind_param($stmt, 'iii', $user_id, $user_group_id, $project_id);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
+            
             $_SESSION['success'][] = array('Project added');
             header('Location: ../proiect/projects.php');
         } else {

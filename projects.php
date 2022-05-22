@@ -106,7 +106,7 @@
                 </div>
                 <div class="form__field">
                   <label class="form__label" for="project_description">Project Description</label>
-                  <textarea class="form__input" name="project_description" id="project_description"
+                  <textarea class="form__textarea" name="project_description" id="project_description"
                     placeholder="Project Description" required></textarea>
                 </div>
                 <button type="submit" class="form__button">Submit</button>

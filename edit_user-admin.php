@@ -25,7 +25,6 @@
   if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
   // get user id from url
   $user_id = $_GET['id'];
-  // get user data from database
   $sql = "SELECT * FROM users WHERE id = '$user_id'";
   $result = mysqli_query($link, $sql);
   $row = mysqli_fetch_assoc($result);

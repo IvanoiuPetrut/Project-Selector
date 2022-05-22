@@ -4,7 +4,7 @@ global $link;
 
 session_start();
 // check if the user is the professor
-if($_SESSION['user_role'] == 2) {
+if($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 2) {
   
   $id = $_GET['id'];
   $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
