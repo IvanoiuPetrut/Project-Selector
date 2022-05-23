@@ -28,50 +28,75 @@
     </nav>
   </header>
 
-  <?php
-    if(!isset($_SESSION['user_id'])){
-      echo <<<HTML
-      <main>
-          <form
-          action="authentificator.php"
-          class="form"
-          method="post"
-          enctype="multipart/form-data"
-          >
-            <div class="form__field">
-              <label class="form__label" for="email">E-Mail</label>
-              <input
-                class="form__input"
-                name="email"
-                type="email"
-                id="email"
-                placeholder="E-mail"
-              />
-            </div>
-            <div class="form__field">
-              <label class="form__label" for="password">Password</label>
-              <input
-                class="form__input"
-                name="password"
-                type="password"
-                id="password"
-                placeholder="Password"
-              />
-            </div>
-            <div class="form__field--btn">
-              <button type="submit" class="form__button btn">Submit</button>
-              <button type="reset" class="form__button btn">Reset</button>
-            </div>
-        </form>
+  <main>
+    <?php
+      if(isset($_SESSION['errors'])) {
+        $errors = $_SESSION['errors'];
+        echo '<div class="errors__wrapper">';
+        foreach($errors as $error) {
+          echo '<p class="error">' . $error[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['errors']);
+      }
+
+      if(isset($_SESSION['success'])) {
+        $success = $_SESSION['success'];
+        echo '<div class="success__wrapper">';
+        foreach($success as $succ) {
+          echo '<p class="success">' . $succ[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['success']);
+      }
+    
+      if(!isset($_SESSION['user_id'])){
+        echo <<<HTML
+            <form
+            action="authentificator.php"
+            class="form"
+            method="post"
+            enctype="multipart/form-data"
+            >
+              <div class="form__field">
+                <label class="form__label" for="email">E-Mail</label>
+                <input
+                  class="form__input"
+                  name="email"
+                  type="email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  id="email"
+                  placeholder="E-mail"
+                  required
+                />
+              </div>
+              <div class="form__field">
+                <label class="form__label" for="password">Password</label>
+                <input
+                  class="form__input"
+                  name="password"
+                  type="password"
+                  minlength="8"
+                  maxlength="30"
+                  id="password"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div class="form__field--btn">
+                <button type="submit" class="form__button btn">Submit</button>
+                <button type="reset" class="form__button btn">Reset</button>
+              </div>
+          </form>
+          HTML;
+        }
+        else {
+          echo <<<HTML
+          <p>Sunteti deja logat.</p>
+          HTML;
+        }
+      ?>
       </main>
-    HTML;
-    }
-    else {
-      echo <<<HTML
-        <p>Sunteti deja logat.</p>
-      HTML;
-    }
-    ?>
 
 </body>
 

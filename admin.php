@@ -98,7 +98,7 @@
                 echo <<<HTML
                 <form action="add_group-admin.php" method="post" enctype="multipart/form-data">
                     <label for="group_name">Group name:</label>
-                    <input type="text" name="group_name" id="group_name" placeholder="222/1" minlength="5" maxlength="5" pattern="[1-9]" title="Please match the requested format: 111/1" required />
+                    <input type="text" name="group_name" id="group_name" placeholder="222/1" pattern="[1-9]{3}/[1-9]{1}" title="Enter valid format: group/semi-group" required />
                     <button type="submit" class="form__button">Add</button>
                 </form>
                 HTML;

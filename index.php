@@ -22,6 +22,28 @@
           include 'logged-in.php'; 
         ?>
       </nav>
+
+      <?php
+      if(isset($_SESSION['errors'])) {
+        $errors = $_SESSION['errors'];
+        echo '<div class="errors__wrapper">';
+        foreach($errors as $error) {
+          echo '<p class="error">' . $error[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['errors']);
+      }
+
+      if(isset($_SESSION['success'])) {
+        $success = $_SESSION['success'];
+        echo '<div class="success__wrapper">';
+        foreach($success as $succ) {
+          echo '<p class="success">' . $succ[0] . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['success']);
+      }
+      ?>
     </header>
   </body>
 </html>
