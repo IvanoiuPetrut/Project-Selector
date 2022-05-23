@@ -34,7 +34,6 @@
   <main>
     <h1 class="heading--primary">Projects</h1>
     <?php
-      // insert session error array intro a new array and display it
       if(isset($_SESSION['errors'])) {
         $errors = $_SESSION['errors'];
         echo '<div class="errors__wrapper">';
@@ -45,7 +44,6 @@
         unset($_SESSION['errors']);
       }
 
-      // insert session success array intro a new array and display it
       if(isset($_SESSION['success'])) {
         $success = $_SESSION['success'];
         echo '<div class="success__wrapper">';
@@ -98,7 +96,7 @@
             echo <<<HTML
             <div class="modal" id="create-project-modal">
               <!-- form -->
-              <form action="insert_data_from_project.php" class="form" method="post" enctype="multipart/form-data">
+              <form action="create_project.php" class="form" method="post" enctype="multipart/form-data">
                 <div class="form__field">
                   <label class="form__label" for="project_name">Project Name</label>
                   <input class="form__input" type="text" name="project_name" id="project_name" placeholder="Project Name"
@@ -125,4 +123,3 @@ HTML;
 </body>
 
 </html>
-</php>

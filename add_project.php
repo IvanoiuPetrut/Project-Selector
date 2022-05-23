@@ -2,7 +2,6 @@
 include 'connect.php';
 global $link;
 
-// get id from url
 $project_id = $_GET['id']; //id-ul proiectuiului
 session_start();
 $user_id = $_SESSION['user_id']; //id-ul utilizatorului
@@ -47,7 +46,7 @@ if($_SESSION['user_role'] == 1)
             $_SESSION['errors'][] = array('Only 2 projects per group allowed');
         }
 
-        header('Location: ../proiect/projects.php');
+        // header('Location: ../proiect/projects.php');
 }
 
 session_write_close();

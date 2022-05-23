@@ -19,7 +19,7 @@ HTML;
 
 if(isset($_SESSION['user_id'])){
   echo <<<HTML
-  <li><a href="settings.php">Settings</a></li>
+  <li><a href="profile.php">Profile</a></li>
   <li><a href="logout.php">Logout</a></li>
 HTML;
 }
@@ -29,5 +29,4 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
   <li><a href="admin.php">Admin</a></li>
 HTML;
 }
-// session_close();
 ?>
