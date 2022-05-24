@@ -51,10 +51,15 @@
     ?>
 
     <div class="section__wrapper profile__wrapper">
-      <section>
-        <h2 class="heading--secondary">Your projects</h2>
-
+      <section class="section__teacher">
         <?php
+        if($_SESSION['user_role']==1) {
+          echo '<h2 class="heading--secondary">Your projects</h2>';
+        } else {
+          echo '<h2 class="heading--secondary">Student projects</h2>';
+        }
+
+        echo '<div class="projects__wrapper">';
         if(isset($_SESSION['user_id'])){
           $user_id = $_SESSION['user_id'];
           $sql = "SELECT * FROM users WHERE id = '$user_id'";
@@ -96,65 +101,60 @@
           }
         }
       
-
-      // check if profesor
-      if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || ($_SESSION['user_role'] == 3))) {
-        // in work projects
-        echo '<h4> Projects &ndash; In work </h4>';
-        $sql = "SELECT projects.name, projects.description, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status = 0";
-        $result = $link -> query($sql);
-        if($result -> num_rows > 0) {
-          echo<<<HTML
-          <table class="table" border="1">
-          <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Project name</th>
-            <th>Project description</th>
-          </tr>
-          HTML;
-          while($row = $result -> fetch_assoc()) {
+        echo '<div class="project__table">';
+        if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || ($_SESSION['user_role'] == 3))) {
+          echo '<h4 class="heading--quaternary"> Projects &ndash; In work </h4>';
+          $sql = "SELECT projects.name, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status = 0";
+          $result = $link -> query($sql);
+          if($result -> num_rows > 0) {
             echo <<<HTML
-            <tr>
-              <td>$row[first_name]</td>
-              <td>$row[last_name]</td>
-              <td>$row[name]</td>
-              <td>$row[description]</td>
+              <table class="table">
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Project Name</th>
+                </tr>
             HTML;
-          }
-        } else {
-          echo '<p>No projects</p>';
+            while($row = $result -> fetch_assoc()) {
+              echo <<<HTML
+                <tr>
+                  <td>{$row['first_name']}</td>
+                  <td>{$row['last_name']}</td>
+                  <td>{$row['name']}</td>
+                </tr>
+              HTML;
+            }
+            echo '</table>';
         }
-        
-        //  finished projects
-        echo <<<HTML
-        <h4>Student &ndash; Finished</h4>
-        HTML;
-        $sql = "SELECT projects.name, projects.description, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status = 1";
-        $result = $link -> query($sql);
-        if($result -> num_rows > 0) {
-          echo<<<HTML
-          <table class="table" border="1">
-          <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Project name</th>
-            <th>Project description</th>
-          </tr>
-          HTML;
-          while($row = $result -> fetch_assoc()) {
+        echo '</div>';
+
+        echo '<div class="project__table">';
+        echo '<h4 class="heading--quaternary"> Projects &ndash; Finished </h4>';
+          $sql = "SELECT projects.name, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status = 1";
+          $result = $link -> query($sql);
+          if($result -> num_rows > 0) {
             echo <<<HTML
-            <tr>
-              <td>$row[first_name]</td>
-              <td>$row[last_name]</td>
-              <td>$row[name]</td>
-              <td>$row[description]</td>
+              <table class="table">
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Project Name</th>
+                </tr>
             HTML;
-          }
-        } else {
-          echo '<p>No projects</p>';
+            while($row = $result -> fetch_assoc()) {
+              echo <<<HTML
+                <tr>
+                  <td>{$row['first_name']}</td>
+                  <td>{$row['last_name']}</td>
+                  <td>{$row['name']}</td>
+                </tr>
+              HTML;
+            }
+            echo '</table>';
         }
       }
+      echo '</div>';
+      echo '</div>';
       ?>
       </section>
 
@@ -177,6 +177,7 @@
           method="post"
           enctype="multipart/form-data"
           >
+          <form action="" class="form">
             <input class="form__input" type="hidden" name="id" id="id" value="$row[id]" />
             <div class="form__field">
               <label class="form__label" for="first_name">First name</label>

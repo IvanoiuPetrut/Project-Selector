@@ -167,6 +167,10 @@
 
 /* PROFILE */
 
+.profile__wrapper {
+  grid-gap: 6.4rem;
+}
+
 .profile__wrapper.section__wrapper {
   display: grid;
   grid-template-columns: 80fr 20fr;
@@ -174,4 +178,34 @@
 
 .profile__wrapper .form__input {
   width: 100%;
+}
+
+.projects__wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3.2rem;
+}
+
+.projects__wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.projects__wrapper table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.8rem;
+  text-transform: uppercase;
+}
+
+.projects__wrapper table td {
+  padding: 0.4rem 0.8rem;
+}
+
+.projects__wrapper table tr:nth-child(even) {
+  background-color: var(--gray1);
+}
+
+.projects__wrapper table tr:nth-child(odd) {
+  background-color: var(--gray2);
 }

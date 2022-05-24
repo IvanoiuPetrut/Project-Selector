@@ -9,7 +9,7 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 session_start();
 $user_id = $_SESSION['user_id'];
-session_write_close();
+
 
 
 $first_name = filter_var($first_name, FILTER_SANITIZE_STRING);
@@ -53,12 +53,15 @@ if($stmt = mysqli_prepare($link, $sql)) {
     $_SESSION['user_email'] = $email;
     $_SESSION['user_password'] = $password;
     $_SESSION['user_group'] = $row['id_group'];
+    $_SESSION['success'][] = array('User updated');
     header('Location: ../proiect/profile.php');
     session_write_close();
 } else {
-    echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
+    $_SESSION['errors'][] = array('Could not update user');
+    header('Location: ../proiect/profile.php');
 }
 
+session_write_close();
 mysqli_stmt_close($stmt);
 mysqli_close($link);
 ?>
