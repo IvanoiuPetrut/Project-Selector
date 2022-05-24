@@ -164,3 +164,14 @@
 .lnk--red:active {
   background-color: var(--red-transparent--hover);
 }
+
+/* PROFILE */
+
+.profile__wrapper.section__wrapper {
+  display: grid;
+  grid-template-columns: 80fr 20fr;
+}
+
+.profile__wrapper .form__input {
+  width: 100%;
+}
