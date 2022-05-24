@@ -76,9 +76,8 @@
                   class="form__input"
                   name="password"
                   type="password"
-                  minlength="8"
-                  maxlength="30"
-                  
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                   id="password"
                   placeholder="Password"
                   required

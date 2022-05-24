@@ -64,7 +64,7 @@
               while ($row = $result->fetch_assoc()) {
                 echo '<div class="project__wrapper">';
                 echo '<div class="project">';
-                echo '<h2 class="heading--secondary">' . $row['name'] . '</ion-icon></h2>';
+                echo '<h2 class="heading--secondary">' . $row['name'] . '</h2>';
                 echo '<p class="project__description">' . $row['description'] . '</p>';
                 echo '</div>';
                   
@@ -90,8 +90,11 @@
         ?>
       </section>
 
-      <section>
+      <section class="section__add-project">
         <?php
+          if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
+          echo '<h2 class="heading--secondary"> Add project </h2>';
+          }
           if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
             echo <<<HTML
               <!-- form -->

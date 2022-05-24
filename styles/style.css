@@ -1,4 +1,14 @@
 /* NAVIGATION */
+.welcome-message {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-right: 1rem;
+}
+
+.name {
+  color: var(--primary);
+}
 
 .nav {
   display: flex;
@@ -107,6 +117,10 @@
 
 /* FORM FROM PROJECT PAGE */
 
+.section__add-project .heading--secondary {
+  text-align: center;
+}
+
 .form {
   font-family: inherit;
   background-color: var(--bg-secondary);
@@ -192,6 +206,10 @@
   grid-gap: 3.2rem;
 }
 
+.prject__profile {
+  width: 100%;
+}
+
 .projects__wrapper table {
   width: 100%;
   border-collapse: collapse;
@@ -234,6 +252,7 @@ table tr:nth-child(odd) {
 .admin__wrapper table th:last-child,
 .admin__wrapper table th:nth-last-child(2) {
   background-color: var(--bg);
+  text-align: center;
 }
 
 .lnk--admin:link,

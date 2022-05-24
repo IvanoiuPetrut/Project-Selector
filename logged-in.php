@@ -1,8 +1,9 @@
 <?php
 
     if ( isset($_SESSION['user_id']) && ! empty ( $_SESSION['user_id'])) {
-        echo 'Salut ' . $_SESSION['user_name'];
+        // echo user name
+        echo '<p class="welcome-message">Welcome <span class="name">' . $_SESSION['user_name'] . '</span></p>';
     } else {
-        echo 'Nu esti autentificat';
+        echo '<p class="welcome-message">You are not logged in</p>';
     }
 ?>

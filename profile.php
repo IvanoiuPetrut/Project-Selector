@@ -79,12 +79,12 @@
           $sql = "SELECT projects.id, projects.name, projects.description FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project WHERE chosen_projects.id_user = '$user_id' and chosen_projects.status = 0";
           $result = $link -> query($sql);
           if($result -> num_rows > 0) {
-            echo '<div>';
+            echo '<div class="prject__profile">';
             while($row = $result -> fetch_assoc()) {
               $row_chosen_projects = $result_chosen_project_id -> fetch_assoc();
               echo '<div class="project__wrapper">';
               echo '<div class="project">';
-              echo '<h2 class="heading--secondary">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
+              echo '<h2 class="heading--secondary">' . $row['name'] . '</h2>';
               echo '<p class="project__description">' . $row['description'] . '</p>';
               echo '</div>';
 
@@ -130,7 +130,7 @@
 
         echo '<div class="project__table">';
         echo '<h4 class="heading--quaternary"> Projects &ndash; Finished </h4>';
-          $sql = "SELECT projects.name, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status = 1";
+          $sql = "SELECT projects.name, users.first_name, users.last_name FROM projects INNER JOIN chosen_projects ON projects.id = chosen_projects.id_project INNER JOIN users ON users.id = chosen_projects.id_user WHERE chosen_projects.status  = 1";
           $result = $link -> query($sql);
           if($result -> num_rows > 0) {
             echo <<<HTML
