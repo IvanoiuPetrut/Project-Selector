@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
-  <link rel="stylesheet" href="styles/register.css" />
-  <link rel="stylesheet" href="styles/meniu.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/login-register.css" />
   <title>Project Selector - Register</title>
 </head>
 
@@ -51,7 +51,7 @@
       }
     ?>
 
-    <form action="create_account.php" class="form" method="post" enctype="multipart/form-data">
+    <form action="create_account.php" class="form center--align" method="post" enctype="multipart/form-data">
       <div class="form__field">
         <label class="form__label" for="first_name">First Name</label>
         <input class="form__input" type="text" name="first_name" pattern="[A-Za-z]{3,32}" id="first_name"

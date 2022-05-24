@@ -8,11 +8,14 @@
   --white3: #f0e7db;
   --white4: #aca7a3;
 
-  --bg: #868e96;
-  --bg-secondary: #495057;
+  --text: #dbdadd;
+  --text-secondary: #99999b;
 
-  --primary: #91a7ff;
-  --primary--secondary: #5c7cfa;
+  --bg: #1f2029;
+  --bg-secondary: #35363e;
+
+  --primary: #20bfa9;
+  --primary--secondary: #137365;
 
   --accent: #fab005;
   --accent--secondary: #f76707;

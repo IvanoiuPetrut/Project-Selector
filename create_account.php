@@ -47,6 +47,7 @@ if($count_email == 0) {
         $_SESSION['user_email'] = $email;
         $_SESSION['user_password'] = $password;
         $_SESSION['user_role'] = $id_role;
+        $_SESSION['user_group'] = $id_group;
         $_SESSION['success'][] = array('Registration successful');
         header('Location: ../proiect/index.php');
         session_write_close();

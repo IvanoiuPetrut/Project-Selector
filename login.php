@@ -8,8 +8,8 @@
   <title>Project Selector - Register</title>
   <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
-  <link rel="stylesheet" href="styles/register.css" />
-  <link rel="stylesheet" href="styles/meniu.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/login-register.css" />
 </head>
 
 <body>
@@ -54,7 +54,7 @@
         echo <<<HTML
             <form
             action="authentificator.php"
-            class="form"
+            class="form center--align"
             method="post"
             enctype="multipart/form-data"
             >

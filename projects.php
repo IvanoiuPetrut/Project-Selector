@@ -8,8 +8,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
-  <link rel="stylesheet" href="styles/projects.css" />
-  <link rel="stylesheet" href="styles/meniu.css" />
+  <link rel="stylesheet" href="styles/login-register.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <!-- <link rel="stylesheet" href="styles/projects.css" /> -->
 
 </head>
 
@@ -29,8 +30,9 @@
     </nav>
   </header>
 
-  <main>
+  <main class="main">
     <h1 class="heading--primary">Projects</h1>
+    
     <?php
       if(isset($_SESSION['errors'])) {
         $errors = $_SESSION['errors'];
@@ -51,48 +53,49 @@
         echo '</div>';
         unset($_SESSION['success']);
       }
-      
-    $sql = 'SELECT * FROM projects';
-    $result = $link->query($sql);
-    if ($result->num_rows > 0) {
-        // output data of each row
-        echo '<div class="container">';
-        while ($row = $result->fetch_assoc()) {
-            echo '<div class="project__wrapper">';
-            echo '<div class="project">';
-            echo '<h2 class="project__title accordion">Materie &mdash; ' . $row['name'] . '<ion-icon name="chevron-down-outline" class="icon icon-accordion"></ion-icon></h2>';
-            echo '<p class="project__description">' . $row['description'] . '</p>';
-            echo '</div>';
-            
-            // check if the user is a techer or a student
-            if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
-                echo '<div class="project__buttons">';
-                echo '<a href="edit_project.php?id=' . $row['id'] . '" class="button button--primary">Edit</a>';
-                echo '<a href="delete_project.php?id=' . $row['id'] . '" class="button button--primary">Delete</a>';
-                echo '</div>';
-            }
-
-            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
-                echo '<div class="project__buttons">';
-                echo '<a href="add_project.php?id=' . $row['id'] . '" class="button button--primary">Add project</a>';
-                echo '</div>';
-            }
-
-            echo '</div>';
-        }
-        echo '</div>';
-    } else {
-        echo "0 results";
-    }
-    $link->close();
-
     ?>
+    
+    <div class="section__wrapper">
+      <section>
+        <?php
+          $sql = 'SELECT * FROM projects';
+          $result = $link->query($sql);
+          if ($result->num_rows > 0) {
+              // output data of each row
+              echo '<div>';
+              while ($row = $result->fetch_assoc()) {
+                echo '<div class="project__wrapper">';
+                echo '<div class="project">';
+                echo '<h2 class="heading--secondary">' . $row['name'] . '</ion-icon></h2>';
+                echo '<p class="project__description">' . $row['description'] . '</p>';
+                echo '</div>';
+                  
+                if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
+                  echo '<div class="project__buttons">';
+                  echo '<a href="edit_project.php?id=' . $row['id'] . '" class="lnk lnk--project"><ion-icon name="create-outline" class="icon icon--project"></ion-icon></a>';
+                  echo '<a href="delete_project.php?id=' . $row['id'] . '" class="lnk lnk--project"><ion-icon name="close-outline" class="icon icon--project"></ion-icon></a>';
+                  echo '</div>';
+                }
 
-    <button id="create-project-btn-open">Create project</button>
-    <?php
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
+                  echo '<div class="project__buttons">';
+                  echo '<a href="add_project.php?id=' . $row['id'] . '" class="button button--primary">Add project</a>';
+                  echo '</div>';
+                }
+                  echo '</div>';
+              }
+              echo '</div>';
+          } else {
+              echo "0 results";
+          }
+          $link->close();
+        ?>
+      </section>
+
+      <section>
+        <?php
           if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
             echo <<<HTML
-            <div class="modal" id="create-project-modal">
               <!-- form -->
               <form action="create_project.php" class="form" method="post" enctype="multipart/form-data">
                 <div class="form__field">
@@ -105,14 +108,16 @@
                   <textarea class="form__textarea" name="project_description" id="project_description"
                     placeholder="Project Description" required></textarea>
                 </div>
-                <button type="submit" class="form__button">Submit</button>
+                <div class="form__field--btn">
+                  <button type="submit" class="form__button btn">Submit</button>
+                  <button type="reset" class="form__button btn">Reset</button>
+                </div>
               </form>
-              <button id="create-project-btn-close">Close</button>
-            </div>
-            <div id="overlay" class="create-project-overlay"></div>
-HTML;
+          HTML;
           }
-    ?>
+      ?>
+      </section>
+    </div>
   </main>
 
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

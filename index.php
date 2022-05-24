@@ -7,7 +7,7 @@
     <title>Project Selector</title>
     <link rel="stylesheet" href="styles/general.css" />
     <link rel="stylesheet" href="styles/colors.css" />
-    <link rel="stylesheet" href="styles/meniu.css" />
+    <link rel="stylesheet" href="styles/style.css" />
   </head>
 
   <body>
@@ -22,7 +22,8 @@
           include 'logged-in.php'; 
         ?>
       </nav>
-
+    </header>
+    
       <?php
       if(isset($_SESSION['errors'])) {
         $errors = $_SESSION['errors'];
@@ -44,6 +45,5 @@
         unset($_SESSION['success']);
       }
       ?>
-    </header>
   </body>
 </html>
