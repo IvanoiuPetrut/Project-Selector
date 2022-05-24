@@ -14,11 +14,11 @@
   --bg: #1f2029;
   --bg-secondary: #35363e;
 
-  --primary: #20bfa9;
-  --primary--secondary: #137365;
+  --primary: #fab005; /*#20bfa9 */
+  --primary--secondary: #f76707; /* #137365 */
 
-  --accent: #fab005;
-  --accent--secondary: #f76707;
+  --accent: #20bfa9;
+  --accent--secondary: #137365;
 
   --red: #ff3636;
   --red-transparent: rgba(198, 36, 55, 0.4);

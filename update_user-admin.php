@@ -21,6 +21,11 @@ $password = filter_var($password, FILTER_SANITIZE_STRING);
 $group_id = filter_var($group_id, FILTER_SANITIZE_NUMBER_INT);
 $role_id = filter_var($role_id, FILTER_SANITIZE_NUMBER_INT);
 
+$first_name = strtolower($first_name);
+$last_name = strtolower($last_name);
+$first_name = ucfirst($first_name);
+$last_name = ucfirst($last_name);
+
 // check if the password is empty
 if (empty($password)) {
     $sql = 'UPDATE users SET id = ?, first_name = ?, last_name = ?, email = ?, id_group = ?, id_role = ? WHERE id = ?';

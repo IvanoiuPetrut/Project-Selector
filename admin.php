@@ -5,17 +5,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Selector</title>
+    <title>Project Selector - Admin</title>
     <link rel="stylesheet" href="styles/general.css" />
     <link rel="stylesheet" href="styles/colors.css" />
-    <link rel="stylesheet" href="styles/meniu.css" />
+    <link rel="stylesheet" href="styles/style.css" />
 </head>
 
 <body>
     <header>
         <nav class="nav">
             <ul class="nav__list">
-            <?php
+                <?php
                 include 'meniu.php';
             ?>
             </ul>
@@ -25,7 +25,8 @@
         </nav>
     </header>
 
-    <main>
+    <main class="main">
+        <h1 class="heading--primary">Admin Panel</h1>
         <?php
         if(isset($_SESSION['errors'])) {
             $errors = $_SESSION['errors'];
@@ -47,14 +48,18 @@
             unset($_SESSION['success']);
         }
         ?>
-        <section>
-            <h3>Users table</h3>
-            <?php
+
+        <div class="section__wrapper admin__wrapper">
+
+            <section>
+                <h2 class="heading--secondary">Users table</h2>
+                <?php
             if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
                 $sql = 'SELECT * FROM users';
                 $result = $link->query($sql);
                 if ($result->num_rows > 0) {
-                    echo '<table class="table" border="1">';
+                    echo '<div class="table__wrapper">';
+                    echo '<table>';
                     echo '<tr>';
                     echo '<th>ID</th>';
                     echo '<th>First name</th>';
@@ -73,11 +78,12 @@
                         echo '<td>' . $row['email'] . '</td>';
                         echo '<td>' . $row['id_group'] . '</td>';
                         echo '<td>' . $row['id_role'] . '</td>';
-                        echo '<td><a href="edit_user-admin.php?id=' . $row['id'] . '">Edit</a></td>';
-                        echo '<td><a href="delete_user-admin.php?id=' . $row['id'] . '">Delete</a></td>';
+                        echo '<td><a href="edit_user-admin.php?id=' . $row['id'] . '" class="lnk lnk--admin">Edit</a></td>';
+                        echo '<td><a href="delete_user-admin.php?id=' . $row['id'] . '" class="lnk lnk--admin">Delete</a></td>';
                         echo '</tr>';
                     }
                     echo '</table>';
+                    echo '</div>';
                 } else {
                     echo '<p>No users found</p>';
                 }
@@ -89,17 +95,19 @@
                 HTML;
             }
             ?>
-        </section>
-        
-        <section>
-            <h3>Add group</h3>
-            <?php
+            </section>
+
+            <section class="section__add-group">
+                <h2 class="heading--secondary">Add group</h2>
+                <?php
             if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
                 echo <<<HTML
-                <form action="add_group-admin.php" method="post" enctype="multipart/form-data">
-                    <label for="group_name">Group name:</label>
-                    <input type="text" name="group_name" id="group_name" placeholder="222/1" pattern="[1-9]{3}/[1-9]{1}" title="Enter valid format: group/semi-group" required />
-                    <button type="submit" class="form__button">Add</button>
+                <form action="add_group-admin.php" method="post" class="form" enctype="multipart/form-data">
+                    <div>
+                        <label for="group_name" class="form__label">Group name:</label>
+                        <input type="text" name="group_name" class="form__input" id="group_name" placeholder="222/1" pattern="[0-9]{3}/[1-9]{1}" title="Enter valid format: group/semi-group" required />
+                    </div>
+                    <button type="submit" class="form__button btn">Add</button>
                 </form>
                 HTML;
             }
@@ -109,7 +117,9 @@
                 HTML;
             }
             ?>
-        </section>
+            </section>
+        </div>
+
     </main>
 </body>
 

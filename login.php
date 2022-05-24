@@ -78,13 +78,14 @@
                   type="password"
                   minlength="8"
                   maxlength="30"
+                  
                   id="password"
                   placeholder="Password"
                   required
                 />
               </div>
               <div class="form__field--btn">
-                <button type="submit" class="form__button btn">Submit</button>
+                <button type="submit" class="form__button btn btn--primary">Submit</button>
                 <button type="reset" class="form__button btn">Reset</button>
               </div>
           </form>

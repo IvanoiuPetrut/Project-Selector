@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project selector - Settings</title>
+  <title>Project selector - Profile</title>
   <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
   <link rel="stylesheet" href="styles/login-register.css" />
@@ -27,7 +27,7 @@
   </header>
 
   <main class='main'>
-    <h1 class="heading--primary">Settings</h1>
+    <h1 class="heading--primary">Profile</h1>
     <?php
     if(isset($_SESSION['errors'])) {
       $errors = $_SESSION['errors'];
@@ -177,7 +177,6 @@
           method="post"
           enctype="multipart/form-data"
           >
-          <form action="" class="form">
             <input class="form__input" type="hidden" name="id" id="id" value="$row[id]" />
             <div class="form__field">
               <label class="form__label" for="first_name">First name</label>

@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Project Selector - Edit user</title>
+  <link rel="stylesheet" href="styles/general.css" />
+  <link rel="stylesheet" href="styles/colors.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/login-register.css" />
 </head>
 <body>
 <header>
@@ -33,7 +37,7 @@
 
       <form
       action="update_user-admin.php"
-      class="form"
+      class="form center--align"
       method="post"
       enctype="multipart/form-data"
       >
@@ -43,19 +47,21 @@
         </div>
         <div class="form__field">
           <label class="form__label" for="first_name">First name</label>
-          <input class="form__input" form__input type="text" name="first_name" id="first_name" value="$row[first_name]" />
+          <input class="form__input" form__input type="text" pattern="[A-Za-z]{3,32}" name="first_name" id="first_name" value="$row[first_name]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="last_name">Last name</label>
-          <input class="form__input" form__input type="text" name="last_name" id="last_name" value="$row[last_name]" />
+          <input class="form__input" form__input type="text" pattern="[A-Za-z]{3,32}" name="last_name" id="last_name" value="$row[last_name]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="email">Email</label>
-          <input class="form__input" form__input type="email" name="email" id="email" value="$row[email]" />
+          <input class="form__input" form__input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          title="Enter valid e-mail" name="email" id="email" value="$row[email]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="password">Password</label>
-          <input class="form__input" form__input type="password" name="password" id="password"/>
+          <input class="form__input" form__input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}"
+          title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" name="password" id="password"/>
         </div>
         <div class="form__field">
           <label class="form__label" for="group">Group ID</label>

@@ -20,8 +20,14 @@
   font-size: 2.4rem;
   font-weight: 400;
   padding: 0.4rem 0.8rem;
+  transition: all 0.3s ease-in-out;
 
   position: relative;
+}
+
+.lnk--nav:hover,
+.lnk--nav:active {
+  color: var(--primary);
 }
 
 /* ERRORS */
@@ -191,21 +197,99 @@
   border-collapse: collapse;
 }
 
-.projects__wrapper table th {
+table th {
   background-color: var(--bg-secondary);
   color: var(--text-secondary);
   padding: 0.4rem 0.8rem;
   text-transform: uppercase;
 }
 
-.projects__wrapper table td {
+table td {
   padding: 0.4rem 0.8rem;
 }
 
-.projects__wrapper table tr:nth-child(even) {
+table tr:nth-child(even) {
   background-color: var(--gray1);
 }
 
-.projects__wrapper table tr:nth-child(odd) {
+table tr:nth-child(odd) {
   background-color: var(--gray2);
+}
+
+/* ADMIN */
+
+.table__wrapper {
+  width: 80%;
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+.admin__wrapper table {
+  width: 95%;
+  border-collapse: collapse;
+}
+
+.admin__wrapper table td:last-child,
+.admin__wrapper table td:nth-last-child(2),
+.admin__wrapper table th:last-child,
+.admin__wrapper table th:nth-last-child(2) {
+  background-color: var(--bg);
+}
+
+.lnk--admin:link,
+.lnk--admin:visited {
+  font-weight: 400;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--primary);
+  border-radius: 7px;
+  color: var(--bg);
+
+  transition: all 0.3s ease-in-out;
+}
+
+/* lnk--admin hover and active state */
+.lnk--admin:hover,
+.lnk--admin:active {
+  background-color: var(--primary--secondary);
+}
+
+.section__add-group {
+  justify-self: center;
+  width: 80%;
+}
+
+.section__add-group .heading--secondary {
+  text-align: center;
+}
+
+.section__add-group .form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--bg-secondary);
+  padding: 1.6rem 2.4rem;
+  width: 100%;
+}
+
+.section__add-group .form__label {
+  margin-right: 1.6rem;
+}
+
+.section__add-group .form__input {
+  padding: 0.4rem 0.8rem;
+  border-style: none;
+  border-radius: 7px;
+}
+
+.section__add-group .btn {
+  background-color: var(--primary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 7px;
+  transition: all 0.3s ease-in-out;
+}
+
+.section__add-group .btn:hover,
+.section__add-group .btn:active {
+  background-color: var(--primary--secondary);
 }

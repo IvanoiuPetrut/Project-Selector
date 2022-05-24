@@ -48,14 +48,12 @@ if($stmt = mysqli_prepare($link, $sql)) {
     }
     mysqli_stmt_execute($stmt);
 
-    session_start();
     $_SESSION['user_name'] = $first_name;
     $_SESSION['user_email'] = $email;
     $_SESSION['user_password'] = $password;
-    $_SESSION['user_group'] = $row['id_group'];
+    $_SESSION['user_group'] = $id_group;
     $_SESSION['success'][] = array('User updated');
     header('Location: ../proiect/profile.php');
-    session_write_close();
 } else {
     $_SESSION['errors'][] = array('Could not update user');
     header('Location: ../proiect/profile.php');
