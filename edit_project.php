@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Project selector - Edit project</title>
+  <link rel="stylesheet" href="styles/general.css" />
+  <link rel="stylesheet" href="styles/colors.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/login-register.css" />
 </head>
 <body>
 <header>
@@ -20,7 +24,7 @@
     </nav>
   </header>
 
-  <main>
+  <main class="main">
     <?php
     if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)
     {
@@ -33,25 +37,22 @@
       $result = mysqli_stmt_get_result($stmt);
       $row = mysqli_fetch_assoc($result);
       echo <<<HTML
-        <h3>Edit project: $row[name]</h3>
+        <h3 class="heading--tertiary">Edit project: $row[name]</h3>
 
         <form
         action="update_project.php"
-        class="form"
+        class="form center--align"
         method="post"
         enctype="multipart/form-data"
         >
-          <div class="form__field">
-            <label class="form__label" for="id">ID</label>
-            <input class="form__input" type="number" name="id" id="id" value="$row[id]" />
-          </div>
+            <input class="form__input" type="hidden" name="id" id="id" value="$row[id]" />
           <div class="form__field">
             <label class="form__label" for="name">Name</label>
-            <input class="form__input" type="text" name="name" id="name" value="$row[name]" />
+            <input class="form__input" type="text" name="name" minlength="3" maxlength="32" id="name" value="$row[name]" />
           </div>
           <div class="form__field">
             <label class="form__label" for="description">Description</label>
-            <input class="form__textarea" type="text" name="description" id="description" value="$row[description]" >
+            <input class="form__textarea" type="text" name="description" minlength="10" maxlength="256" id="description" value="$row[description]" >
           </div>
           <div class="form__field--btn">
             <button type="submit" class="form__button btn">Edit</button>

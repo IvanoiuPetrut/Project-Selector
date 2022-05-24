@@ -63,6 +63,11 @@ body {
   letter-spacing: 0.5px;
 }
 
+.heading--tertiary {
+  display: inline-block;
+  font-size: 3.2rem;
+}
+
 /* LINKS AND BTNS */
 
 .btn {

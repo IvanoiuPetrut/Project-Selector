@@ -49,6 +49,9 @@
       unset($_SESSION['success']);
     }
 
+    echo $_SESSION['user_id'];
+    echo $_SESSION['user_name'];
+
     if(isset($_SESSION['user_id'])){
       $user_id = $_SESSION['user_id'];
       $sql = "SELECT * FROM users WHERE id = '$user_id'";
@@ -66,27 +69,27 @@
       >
       <!-- <div class="form__field">
           <label class="form__label" for="id">ID</label> -->
-          <input class="form__input" form__input type="hidden" name="id" id="id" value="$row[id]" />
+          <input class="form__input" type="hidden" name="id" id="id" value="$row[id]" />
         <!-- </div> -->
         <div class="form__field">
           <label class="form__label" for="first_name">First name</label>
-          <input class="form__input" form__input type="text" name="first_name" id="first_name" value="$row[first_name]" />
+          <input class="form__input" type="text" name="first_name" id="first_name" value="$row[first_name]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="last_name">Last name</label>
-          <input class="form__input" form__input type="text" name="last_name" id="last_name" value="$row[last_name]" />
+          <input class="form__input" type="text" name="last_name" id="last_name" value="$row[last_name]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="email">Email</label>
-          <input class="form__input" form__input type="email" name="email" id="email" value="$row[email]" />
+          <input class="form__input" type="email" name="email" id="email" value="$row[email]" />
         </div>
         <div class="form__field">
           <label class="form__label" for="password">Password</label>
-          <input class="form__input" form__input type="password" name="password" id="password"/>
+          <input class="form__input" type="password" name="password" id="password"/>
         </div>
         <div class="form__field">
           <label class="form__label" for="group">Group</label>
-          <input class="form__input" form__input type="text" name="group" id="group" value="$group_name[name]" />
+          <input class="form__input" type="text" name="group" id="group" value="$group_name[name]" />
         </div>
         <div class="form__field--btn">
           <button type="submit" class="form__button btn">Edit</button>

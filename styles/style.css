@@ -1,3 +1,5 @@
+/* NAVIGATION */
+
 .nav {
   display: flex;
   align-items: center;
@@ -20,6 +22,32 @@
   padding: 0.4rem 0.8rem;
 
   position: relative;
+}
+
+/* ERRORS */
+
+.errors__wrapper {
+  display: inline-block;
+  background-color: var(--red-transparent);
+  padding: 1.2rem 2.4rem;
+  border-radius: 200px;
+  color: var(--red);
+}
+
+.success__wrapper {
+  display: inline-block;
+  background-color: var(--green-transparent);
+  padding: 1.2rem 2.4rem;
+  border-radius: 200px;
+  color: var(--green);
+}
+
+.errors__wrapper,
+.success__wrapper {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* PROJECT PAGE */
@@ -59,7 +87,6 @@
   /* padding: 0.8rem; */
   width: 4.8rem;
   height: 4.8rem;
-  background-color: darkred;
   border-radius: 13px;
 
   display: flex;
@@ -84,7 +111,7 @@
 }
 
 .form__label {
-  margin-bottom: 0.8rem`;
+  margin-bottom: 0.8rem;
 }
 
 .form__field {
@@ -111,6 +138,29 @@
   color: var(--bg-secondary);
 }
 
-.form__field--btn {
+.form__field--btn:link,
+.form__field--btn:visited {
   padding: 0 3.2rem;
+}
+
+.lnk--green:link,
+.lnk--green:visited {
+  background-color: var(--green-transparent);
+  transition: all 0.3s ease-in-out;
+}
+
+.lnk--red:link,
+.lnk--red:visited {
+  background-color: var(--red-transparent);
+  transition: all 0.3s ease-in-out;
+}
+
+.lnk--green:hover,
+.lnk--green:active {
+  background-color: var(--green-transparent--hover);
+}
+
+.lnk--red:hover,
+.lnk--red:active {
+  background-color: var(--red-transparent--hover);
 }

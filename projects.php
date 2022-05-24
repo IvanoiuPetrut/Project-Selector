@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Project selector - Projects</title>
   <link rel="stylesheet" href="styles/general.css" />
   <link rel="stylesheet" href="styles/colors.css" />
   <link rel="stylesheet" href="styles/login-register.css" />
@@ -23,10 +23,8 @@
           ?>
       </ul>
       <?php
-          if(isset($_SESSION['user_id'])) {
-            echo '<span>Welcome ' . $_SESSION['user_name'] . '</span>';
-          }
-        ?>
+        include 'logged-in.php'; 
+      ?>
     </nav>
   </header>
 
@@ -72,14 +70,14 @@
                   
                 if(isset($_SESSION['user_role']) && ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3)) {
                   echo '<div class="project__buttons">';
-                  echo '<a href="edit_project.php?id=' . $row['id'] . '" class="lnk lnk--project"><ion-icon name="create-outline" class="icon icon--project"></ion-icon></a>';
-                  echo '<a href="delete_project.php?id=' . $row['id'] . '" class="lnk lnk--project"><ion-icon name="close-outline" class="icon icon--project"></ion-icon></a>';
+                  echo '<a href="edit_project.php?id=' . $row['id'] . '" class="lnk lnk--project lnk--green"><ion-icon name="create-outline" class="icon icon--project"></ion-icon></a>';
+                  echo '<a href="delete_project.php?id=' . $row['id'] . '" class="lnk lnk--project lnk--red"><ion-icon name="close-outline" class="icon icon--project"></ion-icon></a>';
                   echo '</div>';
                 }
 
                 if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1) {
                   echo '<div class="project__buttons">';
-                  echo '<a href="add_project.php?id=' . $row['id'] . '" class="button button--primary">Add project</a>';
+                  echo '<a href="add_project.php?id=' . $row['id'] . '" class="lnk lnk--project lnk--green"><ion-icon name="add-outline" class="icon icon--project"></ion-icon></a>';
                   echo '</div>';
                 }
                   echo '</div>';
@@ -100,12 +98,12 @@
               <form action="create_project.php" class="form" method="post" enctype="multipart/form-data">
                 <div class="form__field">
                   <label class="form__label" for="project_name">Project Name</label>
-                  <input class="form__input" type="text" name="project_name" id="project_name" placeholder="Project Name"
+                  <input class="form__input" type="text" name="project_name" minlength="3" maxlength="32" id="project_name" placeholder="Project Name"
                     required />
                 </div>
                 <div class="form__field">
                   <label class="form__label" for="project_description">Project Description</label>
-                  <textarea class="form__textarea" name="project_description" id="project_description"
+                  <textarea class="form__textarea" name="project_description" minlength="10" maxlength="256" id="project_description"
                     placeholder="Project Description" required></textarea>
                 </div>
                 <div class="form__field--btn">

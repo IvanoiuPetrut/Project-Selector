@@ -19,4 +19,12 @@
 
   --accent: #fab005;
   --accent--secondary: #f76707;
+
+  --red: #ff3636;
+  --red-transparent: rgba(198, 36, 55, 0.4);
+  --red-transparent--hover: rgba(198, 36, 55, 0.8);
+
+  --green: #80d245;
+  --green-transparent: rgba(123, 218, 28, 0.4);
+  --green-transparent--hover: rgba(123, 218, 28, 0.8);
 }
