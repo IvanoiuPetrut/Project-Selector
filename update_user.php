@@ -23,7 +23,7 @@ $last_name = strtolower($last_name);
 $last_name = ucfirst($last_name);
 
 // select group id from groups table where group name is $group_name
-$sql = "SELECT id FROM groups WHERE name = '$group_name'";
+$sql = "SELECT id FROM groups WHERE name = ?";
 if($stmt = mysqli_prepare($link, $sql)) {
     mysqli_stmt_bind_param($stmt, 's', $group_name);
     mysqli_stmt_execute($stmt);
@@ -53,10 +53,10 @@ if($stmt = mysqli_prepare($link, $sql)) {
     $_SESSION['user_password'] = $password;
     $_SESSION['user_group'] = $id_group;
     $_SESSION['success'][] = array('User updated');
-    header('Location: ../proiect/profile.php');
+    header('Location: profile.php');
 } else {
     $_SESSION['errors'][] = array('Could not update user');
-    header('Location: ../proiect/profile.php');
+    header('Location: profile.php');
 }
 
 session_write_close();

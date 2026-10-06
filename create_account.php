@@ -26,7 +26,7 @@ $sql = "SELECT * FROM users WHERE email = '$email'";
 $count_email = mysqli_num_rows(mysqli_query($link, $sql));
 
 // selecet group id from groups table
-$sql = "SELECT id FROM groups WHERE name = '$group'";
+$sql = "SELECT id FROM groups WHERE name = ?";
 if($stmt = mysqli_prepare($link, $sql)) {
     mysqli_stmt_bind_param($stmt, 's', $group);
     mysqli_stmt_execute($stmt);
@@ -43,14 +43,14 @@ if($count_email == 0) {
 
         session_start();
         $_SESSION['success'][] = array('Registration successful');
-        header('Location: ../proiect/login.php');
+        header('Location: login.php');
     } else {
         $_SESSION['errors'][] = array('Could not register, try again later');
-        header('Location: ../proiect/register.php');
+        header('Location: register.php');
     }
 } else {
     $_SESSION['errors'][] = array('Email already exists');
-    header('Location: ../proiect/register.php');
+    header('Location: register.php');
 }
 
 mysqli_stmt_close($stmt);

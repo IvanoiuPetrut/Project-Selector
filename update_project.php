@@ -20,10 +20,10 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 2 || $_SESSION['user
     mysqli_stmt_execute($stmt);
 
     $_SESSION['success'][] = array('Project updated');
-    header('Location: ../proiect/projects.php');
+    header('Location: projects.php');
   } else {
     $_SESSION['errors'][] = array('Could not update project, try again later');
-    header('Location: ../proiect/projects.php');
+    header('Location: projects.php');
   }
 
   mysqli_stmt_close($stmt);

@@ -5,6 +5,6 @@
     session_unset();
 
     // Redirect
-    header("Location: ../proiect/index.php");
+    header("Location: index.php");
     exit;
 ?>

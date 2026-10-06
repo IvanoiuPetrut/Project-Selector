@@ -65,9 +65,9 @@
           $sql = "SELECT * FROM users WHERE id = '$user_id'";
           $result = mysqli_query($link, $sql);
           $row = mysqli_fetch_assoc($result);
-          $group_name = 'SELECT groups.name FROM groups WHERE id = ' . $row['id_group'];
+          $group_name = 'SELECT groups.name FROM groups WHERE id = ' . (int) $row['id_group'];
           $group_name = mysqli_query($link, $group_name);
-          $group_name = mysqli_fetch_assoc($group_name);
+          $group_name = mysqli_fetch_assoc($group_name) ?: ['name' => ''];
         }
 
         // check if is a student
@@ -167,9 +167,9 @@
           $sql = "SELECT * FROM users WHERE id = '$user_id'";
           $result = mysqli_query($link, $sql);
           $row = mysqli_fetch_assoc($result);
-          $group_name = 'SELECT groups.name FROM groups WHERE id = ' . $row['id_group'];
+          $group_name = 'SELECT groups.name FROM groups WHERE id = ' . (int) $row['id_group'];
           $group_name = mysqli_query($link, $group_name);
-          $group_name = mysqli_fetch_assoc($group_name);
+          $group_name = mysqli_fetch_assoc($group_name) ?: ['name' => ''];
           echo <<<HTML
           <form
           action="update_user.php"

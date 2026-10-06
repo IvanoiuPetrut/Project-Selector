@@ -16,10 +16,10 @@ if((isset($_SESSION['user_id']) && $_SESSION['user_role'] == 1)) {
     mysqli_stmt_close($stmt);
 
     $_SESSION['success'][] = array('Project completed');
-    header('Location: ../proiect/profile.php');
+    header('Location: profile.php');
   } else {
     $_SESSION['errors'][] = array('Could not approve project, try again later');
-    header('Location: ../proiect/profile.php');
+    header('Location: profile.php');
   }
 }
 

@@ -22,18 +22,18 @@
                 $_SESSION['user_role'] = $row['id_role'];
                 $_SESSION['user_group'] = $row['id_group'];
                 $_SESSION['success'][] = array('You are now logged in');
-                header('Location: ../proiect/index.php');
+                header('Location: index.php');
             } else {
                 $_SESSION['errors'][] = array('User not found');
-                header('Location: ../proiect/login.php');
+                header('Location: login.php');
             }
         } else {
             $_SESSION['errors'][] = array('Wrong email or password');
-            header('Location: ../proiect/login.php');
+            header('Location: login.php');
         }
     } else {
         $_SESSION['errors'][] = array('Could not connect to database, please try again later');
-        header('Location: ../proiect/login.php');
+        header('Location: login.php');
     }
     
     session_write_close();

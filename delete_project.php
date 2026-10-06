@@ -15,14 +15,14 @@ if($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 3) {
     mysqli_stmt_execute($stmt);
     
     $_SESSION['success'][] = array('Project deleted');
-    header('Location: ../proiect/projects.php');
+    header('Location: projects.php');
   } else {
     $_SESSION['errors'][] = array('Could not delete project, try again later');
   }
 
   mysqli_stmt_close($stmt);
 } else {
-  header('Location: ../proiect/index.php');
+  header('Location: index.php');
 }
 
 session_write_close();

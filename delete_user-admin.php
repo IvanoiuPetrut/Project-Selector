@@ -13,14 +13,14 @@ if($_SESSION['user_role'] != 3) {
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     
-    header('Location: ../proiect/admin.php');
+    header('Location: admin.php');
   } else {
     echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
   }
 
   mysqli_stmt_close($stmt);
 } else {
-  header('Location: ../proiect/index.php');  
+  header('Location: index.php');  
 }
 
 mysqli_close($link);

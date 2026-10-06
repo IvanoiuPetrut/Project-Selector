@@ -15,10 +15,10 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
     mysqli_stmt_execute($stmt);
 
     $_SESSION['success'][] = array('Group added');
-    header('Location: ../proiect/admin.php');
+    header('Location: admin.php');
   } else {
     $_SESSION['errors'][] = array('Could not add group, try again later');
-    header('Location: ../proiect/admin.php');
+    header('Location: admin.php');
   }
 } else {
   echo 'You are not allowed to be here';

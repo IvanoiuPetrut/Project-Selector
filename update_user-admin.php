@@ -43,7 +43,7 @@ if($stmt = mysqli_prepare($link, $sql)) {
     }
     mysqli_stmt_execute($stmt);
 
-    header('Location: ../proiect/admin.php');
+    header('Location: admin.php');
 } else {
     echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
 }
@@ -51,7 +51,7 @@ if($stmt = mysqli_prepare($link, $sql)) {
 mysqli_stmt_close($stmt);
 mysqli_close($link);
 } else {
-    // header('Location: ../proiect/admin.php');
+    // header('Location: admin.php');
     echo 'You are not the admin';
 }
 

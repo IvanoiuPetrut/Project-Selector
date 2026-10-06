@@ -22,7 +22,7 @@ if($stmt = mysqli_prepare($link, $sql)) {
 // check if the project name is already in use
 if ($result > 0) {
   $_SESSION['errors'][] = array('Project name already in use');
-  header('Location: ../proiect/projects.php');
+  header('Location: projects.php');
 } else {
   $sql = 'INSERT INTO projects (name, description) VALUES (?, ?)';
 
@@ -31,10 +31,10 @@ if ($result > 0) {
     mysqli_stmt_execute($stmt);
 
     $_SESSION['success'][] = array('Project added');
-    header('Location: ../proiect/projects.php');
+    header('Location: projects.php');
   } else {
     $_SESSION['errors'][] = array('Could not add project, try again later');
-    header('Location: ../proiect/projects.php');
+    header('Location: projects.php');
   }
 
   mysqli_stmt_close($stmt);

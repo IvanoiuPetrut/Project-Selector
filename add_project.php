@@ -9,7 +9,7 @@ $user_group_id = $_SESSION['user_group'];
 $status = 0; 
 
 if (empty($project_id)) {
-    header('Location: ../proiect/index.php');
+    header('Location: index.php');
     exit();
 }
 
@@ -51,7 +51,7 @@ if($_SESSION['user_role'] == 1)
                 mysqli_stmt_close($stmt);
                 
                 $_SESSION['success'][] = array('Project added');
-                header('Location: ../proiect/projects.php');
+                header('Location: projects.php');
             } else {
                 echo mysqli_error($link);
             }
@@ -61,7 +61,7 @@ if($_SESSION['user_role'] == 1)
     } else {
         $_SESSION['errors'][] = array('You already took this project');
     }
-        header('Location: ../proiect/projects.php');
+        header('Location: projects.php');
 }
 
 session_write_close();
