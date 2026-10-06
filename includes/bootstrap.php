@@ -1,9 +1,13 @@
 <?php
 // Included at the top of every page and action: configuration, session, database and helpers.
 
+require __DIR__ . '/icons.php';
+
 const ROLE_STUDENT = 1;
 const ROLE_TEACHER = 2;
 const ROLE_ADMIN = 3;
+
+const MAX_TAKERS_PER_GROUP = 2; // students of one group that can take the same project
 
 const NAME_PATTERN = '[A-Za-z]{3,32}';
 const GROUP_PATTERN = '[0-9]{3}/[1-9]';

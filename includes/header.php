@@ -1,7 +1,20 @@
 <?php
-// Expects $title (string) and optionally $styles (extra stylesheet names from styles/).
-$styles ??= [];
+// Expects $title (string).
 $current_user = current_user();
+$current_page = basename($_SERVER['SCRIPT_NAME']);
+
+$nav = ['index.php' => 'Home', 'projects.php' => 'Projects'];
+if ($current_user) {
+  $nav['profile.php'] = 'Profile';
+  if (has_role(ROLE_ADMIN)) {
+    $nav['admin.php'] = 'Admin';
+  }
+}
+$active = match ($current_page) {
+  'edit_project.php' => 'projects.php',
+  'edit_user-admin.php' => 'admin.php',
+  default => $current_page,
+};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,45 +22,69 @@ $current_user = current_user();
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Selector - <?= e($title) ?></title>
-  <link rel="stylesheet" href="styles/general.css" />
-  <link rel="stylesheet" href="styles/colors.css" />
-  <link rel="stylesheet" href="styles/style.css" />
-  <?php foreach ($styles as $style): ?>
-    <link rel="stylesheet" href="styles/<?= e($style) ?>.css" />
-  <?php endforeach ?>
+  <title><?= e($title) ?> · Project Selector</title>
+  <script>
+    try {
+      const theme = localStorage.getItem("theme");
+      if (theme) document.documentElement.dataset.theme = theme;
+    } catch {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="styles/app.css" />
+  <script src="scripts/app.js" defer></script>
 </head>
 
 <body>
-  <header>
-    <nav class="nav">
-      <ul class="nav__list">
-        <li><a href="index.php" class="lnk lnk--nav underline">Home</a></li>
-        <li><a href="projects.php" class="lnk lnk--nav underline">Projects</a></li>
-        <?php if ($current_user): ?>
-          <li><a href="profile.php" class="lnk lnk--nav underline">Profile</a></li>
-          <?php if (has_role(ROLE_ADMIN)): ?>
-            <li><a href="admin.php" class="lnk lnk--nav underline">Admin</a></li>
-          <?php endif ?>
-          <li><a href="logout.php" class="lnk lnk--nav underline">Logout</a></li>
-        <?php else: ?>
-          <li><a href="login.php" class="lnk lnk--nav underline">Login</a></li>
-          <li><a href="register.php" class="lnk lnk--nav underline">Register</a></li>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.php" class="brand">
+        <span class="brand__mark"><?= icon('logo') ?></span>
+        <span class="brand__name">Project Selector</span>
+      </a>
+
+      <nav class="nav" aria-label="Main">
+        <?php foreach ($nav as $href => $label): ?>
+          <a href="<?= $href ?>" class="nav__link" <?= $href === $active ? 'aria-current="page"' : '' ?>><?= $label ?></a>
+        <?php endforeach ?>
+        <?php if (!$current_user): ?>
+          <a href="login.php" class="nav__link nav__link--mobile">Log in</a>
+          <a href="register.php" class="nav__link nav__link--mobile">Sign up</a>
         <?php endif ?>
-      </ul>
-      <?php if ($current_user): ?>
-        <p class="welcome-message">Welcome <span class="name"><?= e($current_user['name']) ?></span></p>
-      <?php else: ?>
-        <p class="welcome-message">You are not logged in</p>
-      <?php endif ?>
-    </nav>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn--ghost btn--icon theme-toggle" aria-label="Toggle dark mode">
+          <?= icon('moon', 'icon icon-moon') ?><?= icon('sun', 'icon icon-sun') ?>
+        </button>
+        <?php if ($current_user): ?>
+          <span class="user-chip">
+            <span class="avatar"><?= e(strtoupper($current_user['name'][0] ?? '?')) ?></span>
+            <span><?= e($current_user['name']) ?></span>
+          </span>
+          <a href="logout.php" class="btn btn--ghost btn--icon" aria-label="Log out" title="Log out"><?= icon('logout') ?></a>
+        <?php else: ?>
+          <a href="login.php" class="btn btn--ghost auth-link">Log in</a>
+          <a href="register.php" class="btn btn--primary auth-link">Sign up</a>
+        <?php endif ?>
+        <button type="button" class="btn btn--ghost btn--icon menu-toggle" aria-label="Menu" aria-expanded="false">
+          <?= icon('menu') ?>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <main class="main">
+  <div class="toasts" aria-live="polite">
     <?php foreach (take_flashes() as $type => $messages): ?>
-      <div class="<?= $type === 'success' ? 'success__wrapper' : 'errors__wrapper' ?>">
-        <?php foreach ($messages as $message): ?>
-          <p class="<?= $type === 'success' ? 'success' : 'error' ?>"><?= e($message) ?></p>
-        <?php endforeach ?>
-      </div>
+      <?php foreach ($messages as $message): ?>
+        <div class="toast <?= $type === 'success' ? '' : 'toast--error' ?>" role="<?= $type === 'success' ? 'status' : 'alert' ?>">
+          <?= icon($type === 'success' ? 'check-circle' : 'x') ?>
+          <p><?= e($message) ?></p>
+          <button type="button" aria-label="Dismiss"><?= icon('x') ?></button>
+        </div>
+      <?php endforeach ?>
     <?php endforeach ?>
+  </div>
+
+  <main class="main container">

@@ -3,8 +3,6 @@ require 'includes/bootstrap.php';
 require_role(ROLE_STUDENT);
 require_post();
 
-const MAX_TAKERS_PER_GROUP = 2;
-
 $user = current_user();
 $project_id = input_int('id');
 

@@ -1,7 +1,8 @@
   </main>
 
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <footer class="site-footer">
+    <div class="container">Project Selector &middot; pick, track and finish semester projects</div>
+  </footer>
 </body>
 
 </html>

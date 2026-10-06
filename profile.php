@@ -3,86 +3,118 @@ require 'includes/bootstrap.php';
 require_role(ROLE_STUDENT, ROLE_TEACHER, ROLE_ADMIN);
 
 $profile = query(
-  'SELECT users.*, `groups`.name AS group_name FROM users LEFT JOIN `groups` ON `groups`.id = users.id_group WHERE users.id = ?',
+  'SELECT users.*, `groups`.name AS group_name, roles.name AS role_name
+   FROM users
+   LEFT JOIN `groups` ON `groups`.id = users.id_group
+   LEFT JOIN roles ON roles.id = users.id_role
+   WHERE users.id = ?',
   [current_user()['id']]
 )->fetch();
 
 if (has_role(ROLE_STUDENT)) {
   $my_projects = query(
-    'SELECT chosen_projects.id AS chosen_id, projects.name, projects.description
+    'SELECT chosen_projects.id AS chosen_id, chosen_projects.status, projects.name, projects.description
      FROM chosen_projects INNER JOIN projects ON projects.id = chosen_projects.id_project
-     WHERE chosen_projects.id_user = ? AND chosen_projects.status = 0',
+     WHERE chosen_projects.id_user = ?
+     ORDER BY chosen_projects.status, projects.name',
     [$profile['id']]
   )->fetchAll();
 } else {
-  $assignments_sql = 'SELECT projects.name, users.first_name, users.last_name
+  $assignments_sql = 'SELECT projects.name, users.first_name, users.last_name, `groups`.name AS group_name
     FROM chosen_projects
     INNER JOIN projects ON projects.id = chosen_projects.id_project
     INNER JOIN users ON users.id = chosen_projects.id_user
+    LEFT JOIN `groups` ON `groups`.id = chosen_projects.id_group
     WHERE chosen_projects.status = ?
     ORDER BY projects.name, users.last_name';
-  $tables = [
-    'Projects &ndash; In work' => query($assignments_sql, [0])->fetchAll(),
-    'Projects &ndash; Finished' => query($assignments_sql, [1])->fetchAll(),
+  $tabs = [
+    'in-work' => ['In work', 'clock', query($assignments_sql, [0])->fetchAll()],
+    'finished' => ['Finished', 'check-circle', query($assignments_sql, [1])->fetchAll()],
   ];
 }
 
 $title = 'Profile';
-$styles = ['login-register'];
 require 'includes/header.php';
 ?>
 
-<h1 class="heading--primary">Profile</h1>
+<div class="page-head">
+  <div>
+    <h1><?= e($profile['first_name'] . ' ' . $profile['last_name']) ?></h1>
+    <p>
+      <span class="badge badge--accent"><?= e(ucfirst($profile['role_name'])) ?></span>
+      <?php if ($profile['group_name']): ?>
+        <span class="badge">Group <?= e($profile['group_name']) ?></span>
+      <?php endif ?>
+    </p>
+  </div>
+</div>
 
-<div class="section__wrapper profile__wrapper">
-  <section class="section__teacher">
+<div class="split">
+  <section>
     <?php if (has_role(ROLE_STUDENT)): ?>
-      <h2 class="heading--secondary">Your projects</h2>
-      <div class="projects__wrapper">
-        <?php if (!$my_projects): ?>
-          <p>No projects</p>
-        <?php endif ?>
+      <h2 class="section-title">Your projects</h2>
+      <?php if (!$my_projects): ?>
+        <div class="card empty">
+          <?= icon('folder') ?>
+          <strong>You have not taken a project yet</strong>
+          <a href="projects.php" class="btn btn--primary btn--sm">Browse projects</a>
+        </div>
+      <?php endif ?>
+      <div class="card-grid">
         <?php foreach ($my_projects as $project): ?>
-          <div class="project__wrapper">
-            <div class="project">
-              <h2 class="heading--secondary"><?= e($project['name']) ?></h2>
-              <p class="project__description"><?= e($project['description']) ?></p>
+          <article class="card project-card">
+            <h3><?= e($project['name']) ?></h3>
+            <p><?= e($project['description']) ?></p>
+            <div class="project-card__footer">
+              <?php if ($project['status']): ?>
+                <span class="badge badge--success"><?= icon('check') ?>Finished</span>
+              <?php else: ?>
+                <span class="badge badge--info"><?= icon('clock') ?>In work</span>
+                <form action="complete_project.php" method="post" class="inline-form" data-confirm="Mark this project as finished?">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="id" value="<?= (int) $project['chosen_id'] ?>" />
+                  <button type="submit" class="btn btn--sm btn--success"><?= icon('check') ?>Mark finished</button>
+                </form>
+              <?php endif ?>
             </div>
-            <div class="project__buttons">
-              <form action="complete_project.php" method="post" class="inline-form">
-                <?= csrf_field() ?>
-                <input type="hidden" name="id" value="<?= (int) $project['chosen_id'] ?>" />
-                <button type="submit" class="lnk lnk--project lnk--green" title="Mark as completed">
-                  <ion-icon name="checkmark-outline"></ion-icon>
-                </button>
-              </form>
-            </div>
-          </div>
+          </article>
         <?php endforeach ?>
       </div>
     <?php else: ?>
-      <h2 class="heading--secondary">Student projects</h2>
-      <div class="projects__wrapper">
-        <?php foreach ($tables as $heading => $rows): ?>
-          <div class="project__table">
-            <h4 class="heading--quaternary"><?= $heading ?></h4>
+      <h2 class="section-title">Student projects</h2>
+      <div class="card">
+        <div class="tabs" role="tablist">
+          <?php foreach ($tabs as $id => [$label, $tab_icon, $rows]): ?>
+            <button type="button" class="tab" role="tab" id="tab-<?= $id ?>" aria-controls="panel-<?= $id ?>"
+              aria-selected="<?= $id === 'in-work' ? 'true' : 'false' ?>">
+              <?= icon($tab_icon) ?><?= $label ?> <span class="badge"><?= count($rows) ?></span>
+            </button>
+          <?php endforeach ?>
+        </div>
+        <?php foreach ($tabs as $id => [$label, $tab_icon, $rows]): ?>
+          <div id="panel-<?= $id ?>" role="tabpanel" aria-labelledby="tab-<?= $id ?>" <?= $id === 'in-work' ? '' : 'hidden' ?>>
             <?php if ($rows): ?>
-              <table class="table">
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Project Name</th>
-                </tr>
-                <?php foreach ($rows as $row): ?>
+              <div class="table-wrap">
+                <table class="table">
                   <tr>
-                    <td><?= e($row['first_name']) ?></td>
-                    <td><?= e($row['last_name']) ?></td>
-                    <td><?= e($row['name']) ?></td>
+                    <th>Student</th>
+                    <th>Group</th>
+                    <th>Project</th>
                   </tr>
-                <?php endforeach ?>
-              </table>
+                  <?php foreach ($rows as $row): ?>
+                    <tr>
+                      <td class="table__person"><?= e($row['first_name'] . ' ' . $row['last_name']) ?></td>
+                      <td class="num"><?= e($row['group_name'] ?? '-') ?></td>
+                      <td><?= e($row['name']) ?></td>
+                    </tr>
+                  <?php endforeach ?>
+                </table>
+              </div>
             <?php else: ?>
-              <p>None</p>
+              <div class="empty">
+                <?= icon($tab_icon) ?>
+                <span>No projects <?= strtolower($label) ?> yet</span>
+              </div>
             <?php endif ?>
           </div>
         <?php endforeach ?>
@@ -90,42 +122,43 @@ require 'includes/header.php';
     <?php endif ?>
   </section>
 
-  <section>
-    <h2 class="heading--secondary">Update your profile</h2>
+  <aside class="card card--pad">
+    <h2>Account details</h2>
+    <p class="card__subtitle">Update your name, e-mail or password.</p>
     <form action="update_user.php" class="form" method="post">
       <?= csrf_field() ?>
-      <div class="form__field">
-        <label class="form__label" for="first_name">First name</label>
-        <input class="form__input" type="text" name="first_name" pattern="<?= NAME_PATTERN ?>" id="first_name"
-          value="<?= e($profile['first_name']) ?>" required />
-      </div>
-      <div class="form__field">
-        <label class="form__label" for="last_name">Last name</label>
-        <input class="form__input" type="text" name="last_name" pattern="<?= NAME_PATTERN ?>" id="last_name"
-          value="<?= e($profile['last_name']) ?>" required />
+      <div class="form-row">
+        <div class="field">
+          <label for="first_name">First name</label>
+          <input class="input" type="text" name="first_name" pattern="<?= NAME_PATTERN ?>" title="3-32 letters"
+            id="first_name" value="<?= e($profile['first_name']) ?>" required />
+        </div>
+        <div class="field">
+          <label for="last_name">Last name</label>
+          <input class="input" type="text" name="last_name" pattern="<?= NAME_PATTERN ?>" title="3-32 letters"
+            id="last_name" value="<?= e($profile['last_name']) ?>" required />
+        </div>
       </div>
       <?php if (has_role(ROLE_STUDENT)): ?>
-        <div class="form__field">
-          <label class="form__label" for="group">Group</label>
-          <input class="form__input" type="text" name="group" pattern="<?= GROUP_PATTERN ?>" title="group/semi-group"
+        <div class="field">
+          <label for="group">Group</label>
+          <input class="input" type="text" name="group" pattern="<?= GROUP_PATTERN ?>" title="group/semi-group, e.g. 222/1"
             id="group" value="<?= e($profile['group_name']) ?>" required />
         </div>
       <?php endif ?>
-      <div class="form__field">
-        <label class="form__label" for="email">Email</label>
-        <input class="form__input" type="email" name="email" id="email" value="<?= e($profile['email']) ?>" required />
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input class="input" type="email" name="email" id="email" value="<?= e($profile['email']) ?>" autocomplete="email" required />
       </div>
-      <div class="form__field">
-        <label class="form__label" for="password">New password</label>
-        <input class="form__input" type="password" name="password" pattern="<?= PASSWORD_PATTERN ?>"
-          title="<?= PASSWORD_HINT ?>" id="password" placeholder="Leave empty to keep" autocomplete="new-password" />
+      <div class="field">
+        <label for="password">New password</label>
+        <input class="input" type="password" name="password" pattern="<?= PASSWORD_PATTERN ?>"
+          title="<?= PASSWORD_HINT ?>" id="password" autocomplete="new-password" />
+        <span class="field__hint">Leave empty to keep your current password</span>
       </div>
-      <div class="form__field--btn">
-        <button type="submit" class="form__button btn">Edit</button>
-        <button type="reset" class="form__button btn">Reset</button>
-      </div>
+      <button type="submit" class="btn btn--primary btn--block">Save changes</button>
     </form>
-  </section>
+  </aside>
 </div>
 
 <?php require 'includes/footer.php'; ?>

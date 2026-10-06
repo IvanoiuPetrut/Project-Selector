@@ -1,29 +1,36 @@
 <?php
 require 'includes/bootstrap.php';
 
-$title = 'Login';
-$styles = ['login-register'];
+if (current_user()) {
+  redirect('index.php');
+}
+
+$title = 'Log in';
 require 'includes/header.php';
 ?>
 
-<?php if (current_user()): ?>
-  <p>You are already logged in.</p>
-<?php else: ?>
-  <form action="authentificator.php" class="form center--align" method="post">
-    <?= csrf_field() ?>
-    <div class="form__field">
-      <label class="form__label" for="email">E-Mail</label>
-      <input class="form__input" name="email" type="email" id="email" placeholder="E-mail" autocomplete="email" required />
-    </div>
-    <div class="form__field">
-      <label class="form__label" for="password">Password</label>
-      <input class="form__input" name="password" type="password" id="password" placeholder="Password" autocomplete="current-password" required />
-    </div>
-    <div class="form__field--btn">
-      <button type="submit" class="form__button btn btn--primary">Submit</button>
-      <button type="reset" class="form__button btn">Reset</button>
-    </div>
-  </form>
-<?php endif ?>
+<div class="auth">
+  <div class="auth__head">
+    <h1>Welcome back</h1>
+    <p>Log in to pick and track your projects.</p>
+  </div>
+
+  <div class="card card--pad">
+    <form action="authentificator.php" class="form" method="post">
+      <?= csrf_field() ?>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input class="input" name="email" type="email" id="email" placeholder="you@example.com" autocomplete="email" required autofocus />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input class="input" name="password" type="password" id="password" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn--primary btn--block">Log in</button>
+    </form>
+  </div>
+
+  <p class="auth__foot">No account yet? <a href="register.php">Sign up</a></p>
+</div>
 
 <?php require 'includes/footer.php'; ?>
