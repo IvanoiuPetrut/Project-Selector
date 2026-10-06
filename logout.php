@@ -1,10 +1,6 @@
 <?php
-    // Start sesiune
-    session_start();
-    // Golire variable de sesiune
-    session_unset();
+require 'includes/bootstrap.php';
 
-    // Redirect
-    header("Location: index.php");
-    exit;
-?>
+$_SESSION = [];
+session_regenerate_id(true);
+redirect('index.php');

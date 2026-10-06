@@ -1,25 +1,22 @@
 <?php
-include 'connect.php';
-global $link;
+require 'includes/bootstrap.php';
+require_role(ROLE_ADMIN);
+require_post();
 
-session_start();
-if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
-  $group_name = $_POST['group_name'];
-  $group_name = filter_var($group_name, FILTER_SANITIZE_STRING);
-
-  // check $group_name if its
-  $sql = 'INSERT INTO groups (name) VALUES (?)';
-  
-  if($stmt = mysqli_prepare($link, $sql)) {
-    mysqli_stmt_bind_param($stmt, 's', $group_name);
-    mysqli_stmt_execute($stmt);
-
-    $_SESSION['success'][] = array('Group added');
-    header('Location: admin.php');
-  } else {
-    $_SESSION['errors'][] = array('Could not add group, try again later');
-    header('Location: admin.php');
-  }
-} else {
-  echo 'You are not allowed to be here';
+$name = input('group_name');
+if (!matches(GROUP_PATTERN, $name)) {
+  flash('errors', 'Group must look like 222/1');
+  redirect('admin.php');
 }
+
+try {
+  query('INSERT INTO `groups` (name) VALUES (?)', [$name]);
+  flash('success', 'Group added');
+} catch (PDOException $e) {
+  if (!is_duplicate_key($e)) {
+    throw $e;
+  }
+  flash('errors', 'Group already exists');
+}
+
+redirect('admin.php');

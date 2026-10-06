@@ -1,59 +1,59 @@
 <?php
-include 'connect.php';
-global $link;
+require 'includes/bootstrap.php';
+require_role(ROLE_ADMIN);
+require_post();
 
-session_start();
-if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 3) {
-$id = $_POST['id'];
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$group_id = $_POST['group'];
-$role_id = $_POST['role'];
+$id = input_int('id');
+$first_name = input('first_name');
+$last_name = input('last_name');
+$email = input('email');
+$password = (string) ($_POST['password'] ?? '');
+$group_id = input_int('group') ?: null;
+$role_id = input_int('role');
 
-// sanitize the data
-$id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-$first_name = filter_var($first_name, FILTER_SANITIZE_STRING);
-$last_name = filter_var($last_name, FILTER_SANITIZE_STRING);
-$email = filter_var($email, FILTER_SANITIZE_EMAIL);
-$password = filter_var($password, FILTER_SANITIZE_STRING);
-$group_id = filter_var($group_id, FILTER_SANITIZE_NUMBER_INT);
-$role_id = filter_var($role_id, FILTER_SANITIZE_NUMBER_INT);
-
-$first_name = strtolower($first_name);
-$last_name = strtolower($last_name);
-$first_name = ucfirst($first_name);
-$last_name = ucfirst($last_name);
-
-// check if the password is empty
-if (empty($password)) {
-    $sql = 'UPDATE users SET id = ?, first_name = ?, last_name = ?, email = ?, id_group = ?, id_role = ? WHERE id = ?';
-} else {
-    $password = filter_var($password, FILTER_SANITIZE_STRING);
-    $password = hash('sha256', $password);
-    $sql = 'UPDATE users SET id = ?, first_name = ?, last_name = ?, email = ?, password = ?, id_group = ?, id_role = ? WHERE id = ?';
+$errors = [];
+if (!matches(NAME_PATTERN, $first_name) || !matches(NAME_PATTERN, $last_name)) {
+  $errors[] = 'Names must be 3-32 letters';
+}
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  $errors[] = 'Enter a valid e-mail';
+}
+if ($password !== '' && !matches(PASSWORD_PATTERN, $password)) {
+  $errors[] = 'Password: ' . PASSWORD_HINT;
+}
+if (!in_array($role_id, [ROLE_STUDENT, ROLE_TEACHER, ROLE_ADMIN], true)) {
+  $errors[] = 'Unknown role';
+}
+if ($id === current_user()['id'] && $role_id !== ROLE_ADMIN) {
+  $errors[] = 'You cannot remove your own admin role';
 }
 
-if($stmt = mysqli_prepare($link, $sql)) {
-    if (empty($password)) {
-        mysqli_stmt_bind_param($stmt, 'isssiii', $id, $first_name, $last_name, $email, $group_id, $role_id, $id);
-    } else {
-        mysqli_stmt_bind_param($stmt, 'issssiii', $id, $first_name, $last_name, $email, $password, $group_id, $role_id, $id);
-    }
-    mysqli_stmt_execute($stmt);
-
-    header('Location: admin.php');
-} else {
-    echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
+if ($errors) {
+  array_walk($errors, fn($error) => flash('errors', $error));
+  redirect('edit_user-admin.php?id=' . $id);
 }
 
-mysqli_stmt_close($stmt);
-mysqli_close($link);
-} else {
-    // header('Location: admin.php');
-    echo 'You are not the admin';
+$fields = [
+  'first_name' => normalize_name($first_name),
+  'last_name' => normalize_name($last_name),
+  'email' => $email,
+  'id_group' => $group_id,
+  'id_role' => $role_id,
+];
+if ($password !== '') {
+  $fields['password'] = password_hash($password, PASSWORD_DEFAULT);
 }
 
-session_write_close();
-?>
+try {
+  $assignments = implode(', ', array_map(fn($column) => "$column = ?", array_keys($fields)));
+  query("UPDATE users SET $assignments WHERE id = ?", [...array_values($fields), $id]);
+} catch (PDOException $e) {
+  if (!is_duplicate_key($e)) {
+    throw $e;
+  }
+  flash('errors', 'Email already in use');
+  redirect('edit_user-admin.php?id=' . $id);
+}
+
+flash('success', 'User updated');
+redirect('admin.php');

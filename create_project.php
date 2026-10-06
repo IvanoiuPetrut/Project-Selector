@@ -1,45 +1,25 @@
 <?php
-include 'connect.php';
-global $link;
+require 'includes/bootstrap.php';
+require_role(ROLE_TEACHER, ROLE_ADMIN);
+require_post();
 
-session_start();
-$project_name = $_POST['project_name'];
-$project_description = $_POST['project_description'];
+$name = input('project_name');
+$description = input('project_description');
 
-//check if the project name is already in use
-$sql = 'SELECT * FROM projects WHERE name = ?';
-
-if($stmt = mysqli_prepare($link, $sql)) {
-  mysqli_stmt_bind_param($stmt, 's', $project_name);
-  mysqli_stmt_execute($stmt);
-  mysqli_stmt_store_result($stmt);
-  $result = mysqli_stmt_num_rows($stmt);
-  mysqli_stmt_close($stmt);
-} else {
-  echo 'ERROR: Could not able to execute ' . $sql . mysqli_error($link);
+if (mb_strlen($name) < 3 || mb_strlen($name) > 32 || mb_strlen($description) < 10 || mb_strlen($description) > 256) {
+  flash('errors', 'Name must be 3-32 characters and description 10-256 characters');
+  redirect('projects.php');
 }
 
-// check if the project name is already in use
-if ($result > 0) {
-  $_SESSION['errors'][] = array('Project name already in use');
-  header('Location: projects.php');
-} else {
-  $sql = 'INSERT INTO projects (name, description) VALUES (?, ?)';
-
-  if($stmt = mysqli_prepare($link, $sql)) {
-    mysqli_stmt_bind_param($stmt, 'ss', $project_name, $project_description);
-    mysqli_stmt_execute($stmt);
-
-    $_SESSION['success'][] = array('Project added');
-    header('Location: projects.php');
-  } else {
-    $_SESSION['errors'][] = array('Could not add project, try again later');
-    header('Location: projects.php');
+try {
+  query('INSERT INTO projects (name, description) VALUES (?, ?)', [$name, $description]);
+} catch (PDOException $e) {
+  if (!is_duplicate_key($e)) {
+    throw $e;
   }
-
-  mysqli_stmt_close($stmt);
+  flash('errors', 'Project name already in use');
+  redirect('projects.php');
 }
 
-session_write_close();
-mysqli_close($link);
-?>
+flash('success', 'Project added');
+redirect('projects.php');

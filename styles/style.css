@@ -312,3 +312,59 @@ table tr:nth-child(odd) {
 .section__add-group .btn:active {
   background-color: var(--primary--secondary);
 }
+
+/* POST ACTIONS (buttons styled like the links they replaced) */
+
+.inline-form {
+  display: inline;
+  margin: 0;
+}
+
+button.lnk {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+}
+
+button.lnk--project {
+  font-size: 2.4rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.lnk--green {
+  background-color: var(--green-transparent);
+  transition: all 0.3s ease-in-out;
+}
+
+button.lnk--red {
+  background-color: var(--red-transparent);
+  transition: all 0.3s ease-in-out;
+}
+
+button.lnk--green:hover {
+  background-color: var(--green-transparent--hover);
+}
+
+button.lnk--red:hover {
+  background-color: var(--red-transparent--hover);
+}
+
+button.lnk--admin {
+  font-size: inherit;
+  font-weight: 400;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--primary);
+  border-radius: 7px;
+  color: var(--bg);
+  transition: all 0.3s ease-in-out;
+}
+
+button.lnk--admin:hover {
+  background-color: var(--primary--secondary);
+}
