@@ -63,7 +63,10 @@ $active = match ($current_page) {
             <span class="avatar"><?= e(strtoupper($current_user['name'][0] ?? '?')) ?></span>
             <span><?= e($current_user['name']) ?></span>
           </span>
-          <a href="logout.php" class="btn btn--ghost btn--icon" aria-label="Log out" title="Log out"><?= icon('logout') ?></a>
+          <form action="logout.php" method="post" class="inline-form">
+            <?= csrf_field() ?>
+            <button type="submit" class="btn btn--ghost btn--icon" aria-label="Log out" title="Log out"><?= icon('logout') ?></button>
+          </form>
         <?php else: ?>
           <a href="login.php" class="btn btn--ghost auth-link">Log in</a>
           <a href="register.php" class="btn btn--primary auth-link">Sign up</a>
