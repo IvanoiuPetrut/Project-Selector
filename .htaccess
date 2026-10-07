@@ -1,5 +1,5 @@
 # Only the PHP pages, styles and scripts are meant to be reachable
-RedirectMatch 404 ^/(includes|db|docker|\.git)(/|$)
-<FilesMatch "^\.|\.(yml|yaml|sql|ini|md)$|^Dockerfile$">
+RedirectMatch 404 ^/(includes|db|docker|deploy|\.git|\.github)(/|$)
+<FilesMatch "^\.|\.(yml|yaml|sql|ini|md|conf|sh)$|^Dockerfile$">
   Require all denied
 </FilesMatch>

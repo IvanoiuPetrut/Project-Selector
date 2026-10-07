@@ -8,3 +8,4 @@ db
 README.md
 .github
 deploy
+.dockerignore
