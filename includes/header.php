@@ -23,12 +23,7 @@ $active = match ($current_page) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= e($title) ?> · Project Selector</title>
-  <script>
-    try {
-      const theme = localStorage.getItem("theme");
-      if (theme) document.documentElement.dataset.theme = theme;
-    } catch {}
-  </script>
+  <script src="scripts/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />

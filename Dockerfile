@@ -1,6 +1,6 @@
 FROM php:8.3-apache
 
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo_mysql && a2enmod headers
 
 COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/apache.conf /etc/apache2/conf-enabled/zz-app.conf
