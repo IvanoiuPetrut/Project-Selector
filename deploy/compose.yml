@@ -1,0 +1,54 @@
+# Production stack. The deploy workflow copies this file and db/init.sql to ~/apps/project-selector
+# on the VPS, where Traefik routes projects.petrut.dev to the app. Passwords live in the .env next to it.
+name: project-selector
+
+services:
+  app:
+    image: ghcr.io/ivanoiupetrut/project-selector:${IMAGE_TAG:-latest}
+    init: true # tiny init as PID 1 so the container stops cleanly
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-project_selector}
+      DB_USER: ${DB_USER:-app}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      APP_DEBUG: "0"
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.project-selector.rule=Host(`projects.petrut.dev`)
+      - traefik.http.routers.project-selector.entrypoints=websecure
+      - traefik.http.routers.project-selector.tls.certresolver=letsencrypt
+      - traefik.http.services.project-selector.loadbalancer.server.port=80
+    # default reaches the db, proxy is where Traefik reaches the app
+    networks:
+      - default
+      - proxy
+
+  db:
+    # MariaDB rather than MySQL 8: the code queries the `groups` table unquoted,
+    # and GROUPS is a reserved word in MySQL 8.
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-project_selector}
+      MARIADB_USER: ${DB_USER:-app}
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env}
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db-data:
+
+networks:
+  proxy:
+    external: true
