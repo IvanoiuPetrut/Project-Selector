@@ -213,3 +213,56 @@ function verify_password(array $user, string $password): bool
   }
   return $valid;
 }
+
+// Login throttling: failed attempts are counted per client IP and per IP + e-mail,
+// in small lock-protected files under the temp dir.
+const LOGIN_WINDOW = 900; // seconds
+const LOGIN_MAX_FAILURES_PER_ACCOUNT = 5; // per IP + e-mail
+const LOGIN_MAX_FAILURES_PER_IP = 50; // across e-mails, high enough for a classroom behind one NAT
+
+// Behind the reverse proxy every request comes from a private address; the proxy appends
+// the real client address to X-Forwarded-For, so take the last entry in that case.
+function client_ip(): string
+{
+  $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+  $public = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+  if ($public === false && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $forwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+    $last = trim(end($forwarded));
+    if (filter_var($last, FILTER_VALIDATE_IP)) {
+      $ip = $last;
+    }
+  }
+  return $ip;
+}
+
+// Loads the recent failure timestamps for $key, lets $change edit them and saves the result, all under one lock.
+function change_login_failures(string $key, callable $change): void
+{
+  $handle = fopen(sys_get_temp_dir() . '/login-failures-' . hash('sha256', $key), 'c+');
+  flock($handle, LOCK_EX);
+  $times = json_decode(stream_get_contents($handle), true);
+  $times = array_values(array_filter(is_array($times) ? $times : [], fn($time) => $time > time() - LOGIN_WINDOW));
+  $times = $change($times);
+  ftruncate($handle, 0);
+  rewind($handle);
+  fwrite($handle, json_encode($times));
+  fclose($handle);
+}
+
+// Counts an attempt as failed before the password is checked, so parallel guesses cannot slip past
+// the limit; forget_login_attempt() takes it back on success. Returns false once the limit is reached.
+function begin_login_attempt(string $key, int $max): bool
+{
+  $allowed = false;
+  change_login_failures($key, function (array $times) use ($max, &$allowed) {
+    $allowed = count($times) < $max;
+    return $allowed ? [...$times, time()] : $times;
+  });
+  return $allowed;
+}
+
+function forget_login_attempt(string $key): void
+{
+  change_login_failures($key, fn(array $times) => array_slice($times, 0, -1));
+}
