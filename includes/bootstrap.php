@@ -102,7 +102,28 @@ function take_flashes(): array
 
 function current_user(): ?array
 {
+  static $refreshed = false;
+  if (!$refreshed && isset($_SESSION['user'])) {
+    // Re-read the account once per request, so a deleted or demoted user loses access right away
+    $refreshed = true;
+    $user = query('SELECT id, first_name, id_role, id_group FROM users WHERE id = ?', [$_SESSION['user']['id']])->fetch();
+    if ($user) {
+      $_SESSION['user'] = session_user($user);
+    } else {
+      unset($_SESSION['user']);
+    }
+  }
   return $_SESSION['user'] ?? null;
+}
+
+function session_user(array $user): array
+{
+  return [
+    'id' => (int) $user['id'],
+    'name' => $user['first_name'],
+    'role' => (int) $user['id_role'],
+    'group' => $user['id_group'] === null ? null : (int) $user['id_group'],
+  ];
 }
 
 function user_role(): int
@@ -130,12 +151,8 @@ function require_role(int ...$roles): void
 function login_user(array $user): void
 {
   session_regenerate_id(true);
-  $_SESSION['user'] = [
-    'id' => (int) $user['id'],
-    'name' => $user['first_name'],
-    'role' => (int) $user['id_role'],
-    'group' => $user['id_group'] === null ? null : (int) $user['id_group'],
-  ];
+  unset($_SESSION['csrf']); // a fresh token for the logged-in session
+  $_SESSION['user'] = session_user($user);
 }
 
 function csrf_token(): string
