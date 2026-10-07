@@ -24,10 +24,23 @@ set_exception_handler(function (Throwable $e) use ($debug) {
   echo $debug ? '<pre>' . e((string) $e) . '</pre>' : 'Something went wrong, please try again later.';
 });
 
+// True when the browser reached us over HTTPS, directly or through the TLS-terminating reverse proxy
+// (which sets X-Forwarded-Proto). A forged header only makes the client's own cookie stricter.
+function is_https(): bool
+{
+  if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+    return true;
+  }
+  $proto = explode(',', (string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0];
+  return strtolower(trim($proto)) === 'https';
+}
+
 session_start([
   'cookie_httponly' => true,
   'cookie_samesite' => 'Lax',
+  'cookie_secure' => is_https(),
   'use_strict_mode' => true,
+  'use_only_cookies' => true,
 ]);
 
 function db(): PDO
