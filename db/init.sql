@@ -18,7 +18,7 @@ CREATE TABLE users (
   first_name VARCHAR(32)  NOT NULL,
   last_name  VARCHAR(32)  NOT NULL,
   email      VARCHAR(255) NOT NULL UNIQUE,
-  password   VARCHAR(255) NOT NULL, -- currently sha256 hex; room left for password_hash()
+  password   VARCHAR(255) NOT NULL, -- password_hash() (bcrypt); legacy unsalted sha256 hex is upgraded on login
   id_group   INT NULL,
   id_role    INT NOT NULL DEFAULT 1,
   FOREIGN KEY (id_group) REFERENCES `groups`(id) ON DELETE SET NULL,
@@ -48,7 +48,7 @@ INSERT INTO roles (id, name) VALUES (1, 'student'), (2, 'teacher'), (3, 'admin')
 
 INSERT INTO `groups` (name) VALUES ('221/1'), ('221/2'), ('222/1'), ('222/2');
 
--- All demo accounts use the password "Password1"
+-- All demo accounts use the password "Password1" (legacy sha256, rehashed with bcrypt on first login)
 INSERT INTO users (first_name, last_name, email, password, id_group, id_role) VALUES
   ('Admin',   'User',    'admin@example.com',   SHA2('Password1', 256), NULL, 3),
   ('Teacher', 'User',    'teacher@example.com', SHA2('Password1', 256), NULL, 2),
